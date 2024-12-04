@@ -1,0 +1,43 @@
+import express from "express";
+import {
+  downloadTicket,
+  searchEvents,
+  bookTickets,
+  createEvent,
+  getOrganizerEvents,
+  getRegisteredEvents,
+  getAllEvents,
+  endEvent,
+  editEvent,
+} from "../controllers/eventcontroller.js";
+
+const router = express.Router();
+
+// Route: Download E-Ticket
+router.post("/download-ticket", downloadTicket);
+
+// Route: Search Events with filters (optional)
+router.get("/search", searchEvents);
+
+// Route: Book tickets for an event
+router.post("/book", bookTickets);
+
+// Route: Create a new event (Organizer only)
+router.post("/create", createEvent);
+
+// Route: Fetch all events created by the organizer
+router.get("/organizer/:email", getOrganizerEvents);
+
+// Route: Fetch registered events for an attendee
+router.get("/registered-events/:email", getRegisteredEvents);
+
+// Route: Fetch all events
+router.get("/all-events", getAllEvents);
+
+// Route: End an event
+router.put("/end-event/:id", endEvent);
+
+// Route: Edit event by specific organizer who created it
+router.put("/edit-event/:id", editEvent);
+
+export default router;
