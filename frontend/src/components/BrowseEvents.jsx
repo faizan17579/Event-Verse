@@ -86,22 +86,16 @@ const BrowseEvents = () => {
     }
 
     const totalAmount = event.amount * ticketCount;
-   
-    
-  
 
-  
-      navigate("/view-tickets", {
-        state: {
-          event,
-          eventId: event._id,
-          tickets: ticketCount,
-          totalAmount,
-          eventName: event.name,
-         
-        },
-      });
-    
+    navigate("/payment", {
+      state: {
+        event,
+        eventId: event._id,
+        tickets: ticketCount,
+        totalAmount,
+        eventName: event.name,
+      },
+    });
   };
 
   if (loading) {

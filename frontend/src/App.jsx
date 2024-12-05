@@ -21,8 +21,9 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import ManageEvents from "./components/ManageEvents";
 import BrowseEvents from "./components/BrowseEvents";
-import StripeViewTickets from "./components/ViewTickets";
+import StripeViewTickets from "./components/Payment";
 import Profile from "./components/OrganizerProfile";
+import ViewTickets from "./components/ViewTickets";
 
 const App = () => {
   return (
@@ -37,7 +38,9 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard/attendee" element={<DashboardAttendee />} />
           <Route path="/browse-events" element={<BrowseEvents />} />
-          { <Route path="/view-tickets" element={<StripeViewTickets />} /> }
+          <Route path="/my-tickets" element={<ViewTickets />} />
+
+          {<Route path="/payment" element={<StripeViewTickets />} />}
           <Route path="/attendee/event-search" element={<EventSearch />} />
           {/* <Route
             path="/attendee/event-dashboard"
