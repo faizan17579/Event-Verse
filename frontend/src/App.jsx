@@ -1,25 +1,60 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import Home from "./pages/Home";
+import React from "react";
+import EventSearch from "./components/EventSearch";
+import EventCreation from "./components/EventCreation";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   useNavigate,
 } from "react-router-dom";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import DashboardAttendee from "./components/DashboardAttendee";
+import DashboardOrganizer from "./components/DashboardOrganizer";
+import DashboardAdmin from "./components/DashboardAdmin";
+//import DashboardSponsor from "./components/DashboardSponsor";
+import Preferences from "./components/Preferences";
+//import EventDashboard from "./components/EventDashboard"; // Import the new component
+import Home from "./pages/Home";
+import Features from "./pages/Features";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import ManageEvents from "./components/ManageEvents";
+import BrowseEvents from "./components/BrowseEvents";
+//import StripeViewTickets from "./components/ViewTickets";
+import Profile from "./components/OrganizerProfile";
 
-function App() {
+const App = () => {
   return (
     <div>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard/attendee" element={<DashboardAttendee />} />
+          <Route path="/browse-events" element={<BrowseEvents />} />
+          {/* <Route path="/view-tickets" element={<StripeViewTickets />} /> */}
+          <Route path="/attendee/event-search" element={<EventSearch />} />
+          {/* <Route
+            path="/attendee/event-dashboard"
+            element={<EventDashboard />}
+          />
+          ; */}
+          <Route path="/preferences" element={<Preferences />} />
+          <Route path="/dashboard/organizer" element={<DashboardOrganizer />} />
+          <Route path="/manage-events" element={<ManageEvents />} />
+          <Route path="/organizer/create-event" element={<EventCreation />} />
+          <Route path="/dashboard/admin" element={<DashboardAdmin />} />
+          {/* <Route path="/dashboard/sponsor" element={<DashboardSponsor />} /> */}
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </Router>
     </div>
   );
-}
+};
 
 export default App;
