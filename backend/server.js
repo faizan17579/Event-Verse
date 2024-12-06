@@ -6,6 +6,7 @@ import eventRoutes from "./routes/eventRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import ticketRoute from "./routes/ticketroutes.js";
 import feedbackRoutes from "./routes/FeedbackRoutes.js";
+import ActivitiesRoutes from "./routes/useractivityroutes.js";
 
 
 
@@ -23,6 +24,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/tickets", ticketRoute);
 app.use("/api/feedback", feedbackRoutes);
+app.use("/api/activities", ActivitiesRoutes);
 
 // Root route
 app.get("/", (req, res) => {
