@@ -21,7 +21,7 @@ export const handlePaymentSuccess = async (req, res) => {
 
     event.availableTickets -= ticketsBooked;
     event.attendees.push(usert.email);
-    
+
 
     await event.save(); // Save the updated event
 
@@ -57,7 +57,7 @@ export const getUserTickets = async (req, res) => {
       ticketsBooked: ticket.ticketsBooked,
       totalPrice: ticket.totalPrice,
       bookingDate: ticket.bookingDate,
-      eventId: ticket.eventId,
+      eventid: ticket.eventId,
       userid: ticket.userId,
     }));
 
