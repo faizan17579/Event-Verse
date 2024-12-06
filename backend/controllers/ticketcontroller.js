@@ -55,6 +55,8 @@ export const getUserTickets = async (req, res) => {
       ticketsBooked: ticket.ticketsBooked,
       totalPrice: ticket.totalPrice,
       bookingDate: ticket.bookingDate,
+      eventid: ticket.eventId,
+      userid: ticket.userId,
     }));
 
     res.json(formattedTickets);

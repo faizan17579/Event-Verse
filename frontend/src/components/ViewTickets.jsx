@@ -30,11 +30,14 @@ const ViewTickets = () => {
     }
   }, [user]);
 
-  const downloadTicket = async (eventId) => {
+
+  const downloadTicket = async (event) => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user?.email) throw new Error("Please log in to download ticket");
+    
 
+      const eventId = event._id;
       const response = await fetch(
         "http://localhost:5000/api/events/download-ticket",
         {
@@ -121,7 +124,7 @@ const ViewTickets = () => {
               <span className="text-yellow-300">${ticket.totalPrice}</span>
             </p>
             <button
-              onClick={() => downloadTicket(ticket._id)}
+              onClick={() => downloadTicket(ticket.eventid)}
               className="absolute bottom-6 right-6 bg-yellow-400 text-gray-800 px-4 py-2 rounded-lg font-semibold hover:bg-yellow-500 hover:text-white transition-all duration-300 shadow-lg"
             >
               Download Ticket
