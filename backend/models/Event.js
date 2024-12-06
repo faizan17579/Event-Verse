@@ -15,6 +15,7 @@ const eventSchema = new mongoose.Schema({
   }, // Organizer's id
   organizerName: { type: String, required: true },
   isEnded: { type: Boolean, default: false }, // Event ended status
+  isApproved: { type: Boolean, default: false }, // Admin approval status
 });
 
 const Event = mongoose.model("Event", eventSchema);

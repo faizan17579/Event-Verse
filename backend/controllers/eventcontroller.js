@@ -6,6 +6,46 @@ import PDFDocument from "pdfkit";
 
 const stripe = new Stripe("sk_test_51QS0yZJDUj9ArTtKD6jx9SHeZFMGmcETkZF9Bag1pvU8yG1KtBpus7fPE75VwavXVwoeuWfl4SwHBSzI7CHQk0Rw00z4tWPCLM");
 
+export const approveEvent = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const event = await Event.findById(id);
+
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    event.isApproved = true; // Approve the event
+    await event.save();
+
+    res.status(200).json({ message: "Event approved successfully", event });
+  } catch (error) {
+    console.error("Error approving event:", error);
+    res.status(500).json({ message: "Error approving event" });
+  }
+};
+
+export const disapproveEvent = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const event = await Event.findById(id);
+
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    event.isApproved = false; // Disapprove the event
+    await event.save();
+
+    res.status(200).json({ message: "Event disapproved successfully", event });
+  } catch (error) {
+    console.error("Error disapproving event:", error);
+    res.status(500).json({ message: "Error disapproving event" });
+  }
+};
+
 
 
 // Route: Download E-Ticket
@@ -97,10 +137,10 @@ export const bookTickets = async (req, res) => {
       event.attendees = [];
     }
 
-    event.attendees.push(attendeeEmail);
+   // event.attendees.push(attendeeEmail);
     // event.availableTickets -= tickets;
 
-   // await event.save();
+    //await event.save();
 
     // Create a payment intent
     const paymentIntent = await stripe.paymentIntents.create({
@@ -177,6 +217,7 @@ export const getRegisteredEvents = async (req, res) => {
   const attendeeEmail = req.params.email;
 
   try {
+    // 
     const registeredEvents = await Event.find({ attendees: attendeeEmail });
     res.status(200).json({ registeredEvents });
   } catch (error) {
@@ -188,13 +229,39 @@ export const getRegisteredEvents = async (req, res) => {
 // Fetch all events
 export const getAllEvents = async (req, res) => {
   try {
-    const events = await Event.find({});
+    // not shown which are not approved and also not ended
+    const events = await Event.find({ isApproved: true, isEnded: false });
+   
     res.status(200).json(events);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to fetch events." });
   }
 };
+export const geteventforadmin = async (req, res) => {
+  try {
+    // not shown which are not approved and also not ended
+    const events = await Event.find();
+   
+    res.status(200).json(events);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch events." });
+  }
+};
+export const geteventfororg = async (req, res) => {
+  try {
+    // not shown which are not approved and also not ended
+    const events = await Event.find({isApproved: true});
+   
+   
+    res.status(200).json(events);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch events." });
+  }
+};
+
 
 // End an event
 export const endEvent = async (req, res) => {

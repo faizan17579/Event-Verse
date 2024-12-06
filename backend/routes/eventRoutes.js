@@ -9,6 +9,10 @@ import {
   getAllEvents,
   endEvent,
   editEvent,
+  approveEvent,
+  disapproveEvent,
+  geteventforadmin,
+  geteventfororg
 } from "../controllers/eventcontroller.js";
 
 const router = express.Router();
@@ -39,5 +43,15 @@ router.put("/end-event/:id", endEvent);
 
 // Route: Edit event by specific organizer who created it
 router.put("/edit-event/:id", editEvent);
+
+// Route to approve an event
+router.post("/approve-event/:id", approveEvent);
+
+// Route to disapprove an event
+router.post("/disapprove-event/:id", disapproveEvent);
+
+router.get("/admin/events", geteventforadmin);
+
+router.get("/org/events", geteventfororg);
 
 export default router;

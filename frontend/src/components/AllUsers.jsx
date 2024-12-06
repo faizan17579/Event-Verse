@@ -50,16 +50,21 @@ const AllUsers = () => {
   // Fetch user activities
   const handleMonitorActivities = async (userId) => {
     try {
+        // set userActivities state to null to clear previous activities
+        setUserActivities(null);
       const response = await fetch(
-        `http://localhost:5000/api/activities//user-activities/${userId}`
+        `http://localhost:5000/api/activities/user-activities/${userId}`
       );
-      const data = await response.json();
-      console.log(data);
+        const data = await response.json();
+     
 
-      setUserActivities((prev) => ({
-        ...prev,
-        [userId]: data.activities || [],
-      }));
+        if (data.activities && data.activities.length > 0) {
+            setUserActivities({
+              [userId]: data.activities, // Add activities only for the specific user
+            });
+          } else {
+            setUserActivities(null);
+          }
       setModalOpen(true);
      
     } catch (err) {
@@ -201,45 +206,49 @@ const AllUsers = () => {
       </h3>
 
       {/* Grid Container for Activities */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {userActivities && Object.keys(userActivities).length > 0 ? (
-          Object.keys(userActivities).flatMap((userId) =>
-            userActivities[userId].map((activity, idx) => {
-              switch (activity.type) {
-                case "Ticket":
-                  return (
-                    <div key={`${userId}-${idx}`} className="p-4 bg-gray-800 rounded-lg shadow">
-                      <p><strong>Type:</strong> Ticket</p>
-                      <p><strong>Event Name:</strong> {activity.action}</p>
-                      <p><strong>Tickets Booked:</strong> {activity.description}</p>
-                      <p><strong>Booking Date:</strong> {new Date(activity.date).toLocaleString()}</p>
-                    </div>
-                  );
-                
-                case "Feedback":
-                  return (
-                    <div key={`${userId}-${idx}`} className="p-4 bg-gray-800 rounded-lg shadow">
-                      <p><strong>Type:</strong> Feedback</p>
-                      <p><strong>Comment:</strong> {activity.message}</p>
-                      <p><strong>Submitted At:</strong> {new Date(activity.date).toLocaleString()}</p>
-                    </div>
-                  );
+    {/* Grid Container for Activities */}
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+  {userActivities && Object.keys(userActivities).length > 0 ? (
+    Object.keys(userActivities).flatMap((userId) =>
+      userActivities[userId].map((activity, idx) => {
+        switch (activity.type) {
+          case "Ticket":
+            return (
+              <div key={`${userId}-${idx}`} className="p-4 bg-gray-800 rounded-lg shadow">
+                <p><strong>Type:</strong> Ticket</p>
+                <p><strong>Event Name:</strong> {activity.action}</p>
+                <p><strong>Tickets Booked:</strong> {activity.description}</p>
+                <p><strong>Booking Date:</strong> {new Date(activity.date).toLocaleString()}</p>
+              </div>
+            );
 
-                default:
-                  return (
-                    <div key={`${userId}-${idx}`} className="p-4 bg-gray-800 rounded-lg shadow">
-                      <p><strong>Action:</strong> {activity.type}</p>
-                      <p><strong>Details:</strong> {activity.message}</p>
-                    </div>
-                  );
-              }
-            })
-          )
-        ) : (
-          <p className="col-span-full text-gray-400 mt-4 text-center">No activities found.</p>
-        )}
-      </div>
-      
+          case "Feedback":
+            return (
+              <div key={`${userId}-${idx}`} className="p-4 bg-gray-800 rounded-lg shadow">
+                <p><strong>Type:</strong> Feedback</p>
+                <p><strong>Comment:</strong> {activity.message}</p>
+                <p><strong>Submitted At:</strong> {new Date(activity.date).toLocaleString()}</p>
+              </div>
+            );
+
+          default:
+            return (
+              <div key={`${userId}-${idx}`} className="p-4 bg-gray-800 rounded-lg shadow">
+                <p><strong>Action:</strong> {activity.type}</p>
+                <p><strong>Details:</strong> {activity.message}</p>
+              </div>
+            );
+        }
+      })
+    )
+  ) : (
+    <div className="col-span-full text-gray-400 mt-4 text-center">
+      <p className="text-2xl font-bold">No activities yet.</p>
+      <p>Perform some actions to see them here.</p>
+    </div>
+  )}
+</div>
+
 
       {/* Close Button */}
       <button

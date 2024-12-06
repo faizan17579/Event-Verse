@@ -27,6 +27,7 @@ import ViewTickets from "./components/ViewTickets";
 import EventFeedback from "./components/FeedbackEvents";
 import AllFeedback from "./components/ManageFeedback";
 import AllUsers from "./components/AllUsers";
+import ApproveEvents from "./components/ApproveEvents";
 
 const App = () => {
   return (
@@ -60,6 +61,7 @@ const App = () => {
           <Route path="/feedback" element={<EventFeedback />} />
           <Route path="/all-feedback" element={<AllFeedback />} />
           <Route path="/all-users" element={<AllUsers />} />
+          <Route path="/admin/events" element={<ApproveEvents />} />
         </Routes>
       </Router>
     </div>

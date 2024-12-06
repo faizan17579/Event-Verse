@@ -12,7 +12,7 @@ const ManageEvents = () => {
     const fetchEvents = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/events/all-events"
+          "http://localhost:5000/api/events/org/events"
         );
         const data = await response.json();
         setEvents(data);

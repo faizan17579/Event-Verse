@@ -13,6 +13,9 @@ export const getUserActivities = async (req, res) => {
     const feedbacks = await Feedback.find({ userId }).sort({ createdAt: -1 });
 
     // Combine tickets and feedbacks into a single array
+    if(!tickets && !feedbacks) {
+      return res.status(404).json({ message: "No activities found" });
+    }
     const activities = [
       ...tickets.map((ticket) => ({
         type: "Ticket",
