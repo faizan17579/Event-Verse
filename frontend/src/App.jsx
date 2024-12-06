@@ -28,11 +28,7 @@ import EventFeedback from "./components/FeedbackEvents";
 import AllFeedback from "./components/ManageFeedback";
 import AllUsers from "./components/AllUsers";
 import ApproveEvents from "./components/ApproveEvents";
-<<<<<<< HEAD
 import MyEvents from "./components/MyEvents";
-=======
-import TicketSalesPage from "./components/TicketSalesPage";
->>>>>>> d61ecaf39457cbf057aa803b1dcc02a4e54f7e43
 
 const App = () => {
   return (

@@ -13,11 +13,6 @@ import {
   disapproveEvent,
   geteventforadmin,
   geteventfororg,
-<<<<<<< HEAD
-  getTrendingEvents,
-=======
-  getTicketSales
->>>>>>> d61ecaf39457cbf057aa803b1dcc02a4e54f7e43
 } from "../controllers/eventcontroller.js";
 
 const router = express.Router();
@@ -58,11 +53,5 @@ router.post("/disapprove-event/:id", disapproveEvent);
 router.get("/admin/events", geteventforadmin);
 
 router.get("/org/events", geteventfororg);
-
-<<<<<<< HEAD
-router.get("/trending", getTrendingEvents);
-=======
-router.get("/ticket-sales", getTicketSales);
->>>>>>> d61ecaf39457cbf057aa803b1dcc02a4e54f7e43
 
 export default router;
