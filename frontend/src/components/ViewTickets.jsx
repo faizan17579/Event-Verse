@@ -30,12 +30,10 @@ const ViewTickets = () => {
     }
   }, [user]);
 
-
   const downloadTicket = async (event) => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user?.email) throw new Error("Please log in to download ticket");
-    
 
       const eventId = event._id;
       const response = await fetch(
@@ -49,8 +47,8 @@ const ViewTickets = () => {
           }),
         }
       );
-      const responseText = await response.text();
-      console.log("Response from server:", responseText);
+      // const responseText = await response.text();
+      // console.log("Response from server:", responseText);
 
       if (!response.ok) throw new Error("Failed to generate E-Ticket");
 
