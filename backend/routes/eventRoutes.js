@@ -12,7 +12,8 @@ import {
   approveEvent,
   disapproveEvent,
   geteventforadmin,
-  geteventfororg
+  geteventfororg,
+  getTrendingEvents,
 } from "../controllers/eventcontroller.js";
 
 const router = express.Router();
@@ -53,5 +54,7 @@ router.post("/disapprove-event/:id", disapproveEvent);
 router.get("/admin/events", geteventforadmin);
 
 router.get("/org/events", geteventfororg);
+
+router.get("/trending", getTrendingEvents);
 
 export default router;

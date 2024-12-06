@@ -1,6 +1,26 @@
 import Ticket from "../models/ticket.js";
 import User from "../models/User.js";
 import Event from "../models/Event.js";
+import Feedback from "../models/Feedback.js";
+
+export const handleCancelTicket = async (req, res) => {
+  const ticketId = req.params.ticketId;
+
+  try {
+    // Find and delete the ticket by its ID
+    const ticket = await Ticket.findByIdAndDelete(ticketId);
+
+    if (!ticket) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    // Return a success message
+    res.status(200).json({ message: "Ticket canceled successfully" });
+  } catch (err) {
+    console.error("Error canceling ticket:", err);
+    res.status(500).json({ error: "Error canceling ticket" });
+  }
+};
 
 export const handlePaymentSuccess = async (req, res) => {
   try {
@@ -21,7 +41,6 @@ export const handlePaymentSuccess = async (req, res) => {
 
     event.availableTickets -= ticketsBooked;
     event.attendees.push(usert.email);
-
 
     await event.save(); // Save the updated event
 

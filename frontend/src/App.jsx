@@ -28,6 +28,7 @@ import EventFeedback from "./components/FeedbackEvents";
 import AllFeedback from "./components/ManageFeedback";
 import AllUsers from "./components/AllUsers";
 import ApproveEvents from "./components/ApproveEvents";
+import MyEvents from "./components/MyEvents";
 
 const App = () => {
   return (
@@ -46,6 +47,7 @@ const App = () => {
 
           {<Route path="/payment" element={<StripeViewTickets />} />}
           <Route path="/attendee/event-search" element={<EventSearch />} />
+          <Route path="/attendee/events" element={<MyEvents />} />
           {/* <Route
             path="/attendee/event-dashboard"
             element={<EventDashboard />}
