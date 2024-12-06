@@ -33,7 +33,7 @@ const ManageEvents = () => {
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ organizerId: user._id }),
+          body: JSON.stringify({ organizerId: user.id }),
         }
       );
 
@@ -80,7 +80,7 @@ const ManageEvents = () => {
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...updatedDetails, organizerId: user._id }),
+          body: JSON.stringify({ ...updatedDetails, organizerId: user.id }),
         }
       );
 
@@ -185,7 +185,7 @@ const ManageEvents = () => {
                 <div className="flex justify-center space-x-4">
                   {event.isEnded ? (
                     <span className="text-green-300 italic">Ended</span>
-                  ) : event.createdBy === user._id ? (
+                  ) : event.createdBy === user.id ? (
                     <>
                       <button
                         className="bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-600 transition"
