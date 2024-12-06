@@ -24,6 +24,9 @@ import BrowseEvents from "./components/BrowseEvents";
 import StripeViewTickets from "./components/Payment";
 import Profile from "./components/OrganizerProfile";
 import ViewTickets from "./components/ViewTickets";
+import EventFeedback from "./components/FeedbackEvents";
+import AllFeedback from "./components/ManageFeedback";
+import AllUsers from "./components/AllUsers";
 
 const App = () => {
   return (
@@ -54,6 +57,9 @@ const App = () => {
           <Route path="/dashboard/admin" element={<DashboardAdmin />} />
           {/* <Route path="/dashboard/sponsor" element={<DashboardSponsor />} /> */}
           <Route path="/profile" element={<Profile />} />
+          <Route path="/feedback" element={<EventFeedback />} />
+          <Route path="/all-feedback" element={<AllFeedback />} />
+          <Route path="/all-users" element={<AllUsers />} />
         </Routes>
       </Router>
     </div>
