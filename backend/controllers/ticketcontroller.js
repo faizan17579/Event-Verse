@@ -20,6 +20,8 @@ export const handlePaymentSuccess = async (req, res) => {
     if (!event) throw new Error("Event not found");
 
     event.availableTickets -= ticketsBooked;
+    event.attendees.push(usert.email);
+    
 
     await event.save(); // Save the updated event
 
@@ -55,7 +57,7 @@ export const getUserTickets = async (req, res) => {
       ticketsBooked: ticket.ticketsBooked,
       totalPrice: ticket.totalPrice,
       bookingDate: ticket.bookingDate,
-      eventid: ticket.eventId,
+      eventId: ticket.eventId,
       userid: ticket.userId,
     }));
 
