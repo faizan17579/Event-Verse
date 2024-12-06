@@ -28,7 +28,11 @@ import EventFeedback from "./components/FeedbackEvents";
 import AllFeedback from "./components/ManageFeedback";
 import AllUsers from "./components/AllUsers";
 import ApproveEvents from "./components/ApproveEvents";
+<<<<<<< HEAD
 import MyEvents from "./components/MyEvents";
+=======
+import TicketSalesPage from "./components/TicketSalesPage";
+>>>>>>> d61ecaf39457cbf057aa803b1dcc02a4e54f7e43
 
 const App = () => {
   return (
@@ -64,6 +68,7 @@ const App = () => {
           <Route path="/all-feedback" element={<AllFeedback />} />
           <Route path="/all-users" element={<AllUsers />} />
           <Route path="/admin/events" element={<ApproveEvents />} />
+          <Route path="/ticket-sales" element={<TicketSalesPage />} />
         </Routes>
       </Router>
     </div>
