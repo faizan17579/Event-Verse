@@ -320,3 +320,61 @@ export const editEvent = async (req, res) => {
   }
 };
 
+
+export const getTicketSales = async (req, res) => {
+  try {
+    const { eventName, dateRange, organizerId } = req.query;
+
+    if (!organizerId) {
+      return res.status(400).json({ error: "Organizer ID is required" });
+    }
+
+    // Build filter object
+    const filter = { createdBy: organizerId }; // Filter for specific organizer
+    if (eventName) {
+      filter.name = { $regex: eventName, $options: "i" }; // Case-insensitive search
+    }
+    if (dateRange) {
+      const [startDate, endDate] = dateRange.split(",");
+      filter.date = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    }
+
+    // Query data from database
+    const events = await Event.find(filter);
+
+    // Calculate total revenue, tickets sold, and events
+    const totalRevenue = events.reduce(
+      (sum, event) => sum + event.amount * (event.attendees.length || 0),
+      0
+    );
+    const totalTicketsSold = events.reduce(
+      (sum, event) => sum + (event.attendees.length || 0),
+      0
+    );
+    const totalEvents = events.length;
+
+    // Format data for the response
+    const formattedData = events.map((event) => ({
+      eventName: event.name,
+      ticketsSold: event.attendees.length,
+      revenue: event.amount * event.attendees.length,
+      date: event.date,
+    }));
+
+    // Send response
+    res.status(200).json({
+      summary: {
+        totalRevenue,
+        totalTicketsSold,
+        totalEvents,
+      },
+      salesData: formattedData,
+    });
+  } catch (error) {
+    console.error("Error fetching ticket sales:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
