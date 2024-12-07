@@ -541,8 +541,9 @@ export const getEventAnalytics = async (req, res) => {
 
     const feedbackSummary = {
      //add comment from feedback data to word cloud
-     wordCloud: feedbackData.map(item => item.comment).join(' ').split(' '),
-      overallRating: feedback.reduce((sum, item) => sum + item.rating, 0) / feedback.length
+     wordCloud: feedbackData.map(item => item.comment),
+   
+     overallRating :(feedback.reduce((sum, item) => sum + item.rating, 0) / feedback.length).toFixed(2)
     };
 
     res.status(200).json({

@@ -48,6 +48,7 @@ const BrowseEvents = () => {
       );
       const data = await response.json();
       setUserLocation(data.city || "Unknown Location");
+
     } catch (err) {
       console.error("Error fetching user location:", err);
       setUserLocation("Unknown Location");
