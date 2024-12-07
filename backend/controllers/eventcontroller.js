@@ -498,3 +498,30 @@ export const getEventAnalytics = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+export const generateQrCode = async (req, res) => {
+  try {
+    const { eventId, tickets, attendeeEmail, totalAmount } = req.body;
+console.log("Request Body:", req.body); // Log the incoming data
+    // Validate required fields
+    if (!eventId || !tickets || !attendeeEmail || !totalAmount) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    // Create a Payment Intent
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: totalAmount * 100, // Amount in cents
+      currency: "usd",
+      metadata: { eventId, attendeeEmail },
+    });
+
+    // Generate a Payment Link or QR Code URL
+    const paymentLink = `https://checkout.stripe.com/pay/${paymentIntent.client_secret}`;
+
+    res.status(200).json({ paymentLink });
+  } catch (err) {
+    console.error("Error generating payment link:", err);
+    res.status(500).json({ message: "Failed to generate payment link" });
+  }
+};

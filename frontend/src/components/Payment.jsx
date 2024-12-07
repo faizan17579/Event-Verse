@@ -15,6 +15,8 @@ import {
   FaArrowLeft,
 } from "react-icons/fa";
 
+import { QRCodeCanvas } from "qrcode.react";
+
 // Load Stripe
 const stripePromise = loadStripe(
   "pk_test_51QS0yZJDUj9ArTtKWG5Espc1cGGzqoVEsEhaktzAvfT5NXAM6q6ZVEZAvA7TMEZsvZeqIz09PHtfpdoWxPmdwiSv006wFVDKpE"
@@ -100,8 +102,42 @@ const Payment = () => {
   const [paymentIntent, setPaymentIntent] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [qrPaymentLink, setQrPaymentLink] = useState(null);
+
 
   const { eventId, tickets, totalAmount, eventName } = location.state || {};
+
+
+const handleGenerateQR = async () => {
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user?.email) throw new Error("Please log in to continue.");
+
+    const response = await fetch("http://localhost:5000/api/events/generate-qr", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        eventId,
+        tickets,
+        attendeeEmail: user.email,
+        totalAmount
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Failed to generate QR payment link");
+    }
+
+    const { paymentLink } = await response.json();
+    setQrPaymentLink(paymentLink); // Save the link for QR code generation
+  } catch (err) {
+    setError(err.message);
+    console.error("Error generating QR code:", err);
+  }
+};
+
+
 
   const initiatePayment = async () => {
     try {
@@ -265,13 +301,27 @@ const Payment = () => {
             ) : (
               <div className="space-y-4">
                 {!paymentIntent ? (
-                  <button
-                    onClick={initiatePayment}
-                    className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700"
-                  >
-                    <FaCreditCard className="mr-2 h-5 w-5" />
-                    Proceed to Payment
-                  </button>
+                  <><button
+                      onClick={initiatePayment}
+                      className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700"
+                    >
+                      <FaCreditCard className="mr-2 h-5 w-5" />
+                      Proceed to Payment
+                    </button><button
+                      onClick={handleGenerateQR}
+                      className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 mt-4"
+                    >
+                        Generate QR for Payment
+                      </button>
+                     {qrPaymentLink && (
+                      <div className="flex flex-col items-center mt-4">
+                        <p className="text-white mb-2">Scan the QR code below to make a payment:</p>
+                        <QRCodeCanvas value={qrPaymentLink} size={200} />
+                      </div>
+                    )}
+                  
+                    </>
+                    
                 ) : (
                   <Elements stripe={stripePromise}>
                     <PaymentForm
