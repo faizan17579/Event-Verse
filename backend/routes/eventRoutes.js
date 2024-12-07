@@ -16,11 +16,8 @@ import {
   getTrendingEvents,
   getTicketSales,
   getEventAnalytics,
-<<<<<<< HEAD
   generateQrCode,
-=======
-  downloadAnalytics
->>>>>>> 685b11ce31a7685affc41c5310ae39000c761e3f
+  downloadAnalytics,
 } from "../controllers/eventcontroller.js";
 
 const router = express.Router();
@@ -68,11 +65,9 @@ router.get("/ticket-sales", getTicketSales);
 
 router.get("/analytics/:organizerId", getEventAnalytics);
 
-<<<<<<< HEAD
 // Route to generate QR for payment
 router.post("/generate-qr", generateQrCode);
-=======
+
 router.post("/download-analytics", downloadAnalytics);
->>>>>>> 685b11ce31a7685affc41c5310ae39000c761e3f
 
 export default router;

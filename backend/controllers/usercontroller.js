@@ -4,7 +4,9 @@ import jwt from "jsonwebtoken";
 
 // Generate JWT token
 const generateToken = (user) => {
-  return jwt.sign({ id:user._id,us:user}, process.env.JWT_SECRET, { expiresIn: "1hr" });
+  return jwt.sign({ id: user._id, us: user }, process.env.JWT_SECRET, {
+    expiresIn: "1hr",
+  });
 };
 
 // Signup
@@ -16,7 +18,6 @@ export const signup = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
-
 
     const newUser = new User({
       name,
@@ -35,11 +36,11 @@ export const signup = async (req, res) => {
 
 // Login
 export const login = async (req, res) => {
-  const {role}=req.params;
+  const { role } = req.params;
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email,role });
+    const user = await User.findOne({ email, role });
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
@@ -120,7 +121,9 @@ export const deleteUser = async (req, res) => {
     }
   } catch (error) {
     console.error("Error deleting user:", error);
-    res.status(500).json({ message: "Internal server error", details: error.message });
+    res
+      .status(500)
+      .json({ message: "Internal server error", details: error.message });
   }
 };
 // Get all users
@@ -129,10 +132,11 @@ export const getAllUsers = async (req, res) => {
     // want to not select the user with role "Admin"
     const users = await User.find({ role: { $ne: "Admin" } });
 
-
     res.status(200).json({ users });
   } catch (error) {
     console.error("Error fetching users:", error);
-    res.status(500).json({ message: "Internal server error", details: error.message });
+    res
+      .status(500)
+      .json({ message: "Internal server error", details: error.message });
   }
 };

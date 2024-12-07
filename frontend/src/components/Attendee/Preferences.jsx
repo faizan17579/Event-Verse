@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { FaMusic, FaFutbol, FaBuilding, FaCalendarAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const InterestsForm = ({ email }) => {
+const InterestsForm = ({}) => {
+  const user = localStorage.getItem("user");
+
+  const userObj = JSON.parse(user); // Parse the JSON string
+  const email = userObj.email;
+
   const [selectedInterests, setSelectedInterests] = useState({
     music: [],
     sport: [],
@@ -52,7 +57,6 @@ const InterestsForm = ({ email }) => {
       if (response.ok) {
         setMessage("Preferences saved successfully!");
         //go to login page
-        navigate("/login");
       } else {
         setMessage(
           data.message || "An error occurred while saving preferences."
@@ -65,7 +69,13 @@ const InterestsForm = ({ email }) => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 min-h-screen text-white">
+    <div
+      className="min-h-screen flex flex-col text-white"
+      style={{
+        backgroundImage: `linear-gradient(to right, rgba(242, 98, 152, 0.3), rgba(242, 98, 152, 0.7)), url('/images/login_bc.png')`,
+        backgroundSize: "cover",
+      }}
+    >
       <div className="container mx-auto py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Left Side */}

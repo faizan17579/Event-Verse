@@ -61,6 +61,17 @@ const AttendeeDashboard = () => {
             </NavLink>
 
             <NavLink
+              to="/preferences"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-yellow-400 border-b-2 border-yellow-400 pb-1"
+                  : "hover:text-yellow-400 transition duration-300 text-white"
+              }
+            >
+              View Preferences
+            </NavLink>
+
+            <NavLink
               to="/"
               className={({ isActive }) =>
                 isActive
@@ -123,6 +134,20 @@ const AttendeeDashboard = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 My Events
+              </NavLink>
+            </li>
+
+            <li className="border-b border-gray-600">
+              <NavLink
+                to="/preferences"
+                className={({ isActive }) =>
+                  isActive
+                    ? "block py-3 px-5 text-yellow-400 bg-gray-800"
+                    : "block py-3 px-5 hover:bg-gray-600"
+                }
+                onClick={() => setIsMenuOpen(false)}
+              >
+                View Preferences
               </NavLink>
             </li>
 

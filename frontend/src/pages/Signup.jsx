@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Preferences from "./Preferences";
+// import Preferences from "./Preferences";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -33,9 +33,6 @@ const Signup = () => {
 
       if (response.ok) {
         setMessage("Signup successful!");
-        if (formData.role === "Attendee") {
-          setShowPreferences(true);
-        }
       } else {
         setMessage(data.message || "An error occurred during signup.");
       }
