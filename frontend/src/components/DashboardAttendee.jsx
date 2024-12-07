@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 const AttendeeDashboard = () => {
@@ -15,7 +15,7 @@ const AttendeeDashboard = () => {
 
         // Extract the user object from the decoded payload
         const userData = payload.us;
-        
+
         // Set the user object in the state
         setUser(userData);
         // Full user object
@@ -25,7 +25,13 @@ const AttendeeDashboard = () => {
     }
   }, []);
   return (
-    <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 min-h-screen text-white">
+    <div
+      className="min-h-screen flex flex-col text-white"
+      style={{
+        backgroundImage: `linear-gradient(to right, rgba(242, 98, 152, 0.3), rgba(242, 98, 152, 0.7)), url('/images/login_bc.png')`,
+        backgroundSize: "cover",
+      }}
+    >
       {/* Navbar */}
       <nav className="bg-gray-800 text-white shadow-lg sticky top-0 z-10">
         <div className="container mx-auto flex justify-between items-center p-5">
@@ -53,18 +59,9 @@ const AttendeeDashboard = () => {
             >
               My Events
             </NavLink>
+
             <NavLink
-              to="/profile"
-              className={({ isActive }) =>
-                isActive
-                  ? "text-yellow-400 border-b-2 border-yellow-400 pb-1"
-                  : "hover:text-yellow-400 transition duration-300 text-white"
-              }
-            >
-              Profile
-            </NavLink>
-            <NavLink
-              to="/logout"
+              to="/"
               className={({ isActive }) =>
                 isActive
                   ? "text-yellow-400 border-b-2 border-yellow-400 pb-1"
@@ -128,22 +125,10 @@ const AttendeeDashboard = () => {
                 My Events
               </NavLink>
             </li>
-            <li className="border-b border-gray-600">
-              <NavLink
-                to="/profile"
-                className={({ isActive }) =>
-                  isActive
-                    ? "block py-3 px-5 text-yellow-400 bg-gray-800"
-                    : "block py-3 px-5 hover:bg-gray-600"
-                }
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Profile
-              </NavLink>
-            </li>
+
             <li>
               <NavLink
-                to="/logout"
+                to="/"
                 className={({ isActive }) =>
                   isActive
                     ? "block py-3 px-5 text-yellow-400 bg-gray-800"
@@ -161,7 +146,7 @@ const AttendeeDashboard = () => {
       {/* Header */}
       <header className="text-center py-20">
         <h2 className="text-5xl font-extrabold mb-6 animate-pulse">
-          Welcome  {user?.name || "Guest"}
+          Welcome {user?.name || "Guest"}
         </h2>
         <p className="text-lg max-w-2xl mx-auto">
           Explore events, book tickets, and track your favorite experiences in
@@ -220,7 +205,7 @@ const AttendeeDashboard = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-10 text-center">
+      <footer className="bg-gray-900 text-white py-10 text-center mt-auto">
         <p>© 2024 EventVerse. All rights reserved.</p>
         <div className="flex justify-center gap-5 mt-4">
           <a href="#" className="hover:text-yellow-400">

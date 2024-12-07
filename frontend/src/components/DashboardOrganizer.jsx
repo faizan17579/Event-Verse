@@ -3,7 +3,6 @@ import { Link, NavLink } from "react-router-dom";
 
 const OrganizerDashboard = () => {
   // get user from local storage
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
 
@@ -20,15 +19,20 @@ const OrganizerDashboard = () => {
 
         // Set the user object in the state
         setUser(userData);
-        // Full user object
       } catch (error) {
         console.error("Error decoding token:", error);
       }
     }
   }, []);
+
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white">
-      {/* Navbar */}
+    <div
+      className="min-h-screen flex flex-col text-white"
+      style={{
+        backgroundImage: `linear-gradient(to right, rgba(242, 98, 152, 0.3), rgba(242, 98, 152, 0.7)), url('/images/login_bc.png')`,
+        backgroundSize: "cover",
+      }}
+    >
       {/* Navbar */}
       <nav className="bg-gray-800 text-white shadow-lg sticky top-0 z-10">
         <div className="container mx-auto flex justify-between items-center p-5">
@@ -173,7 +177,7 @@ const OrganizerDashboard = () => {
       </header>
 
       {/* Main Dashboard */}
-      <section className="px-5 py-10">
+      <section className="px-5 py-10 flex-grow">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Card 1: Event Management */}
           <div className="bg-gray-100 text-black p-6 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300">

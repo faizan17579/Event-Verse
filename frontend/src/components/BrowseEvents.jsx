@@ -48,7 +48,6 @@ const BrowseEvents = () => {
       );
       const data = await response.json();
       setUserLocation(data.city || "Unknown Location");
-
     } catch (err) {
       console.error("Error fetching user location:", err);
       setUserLocation("Unknown Location");
@@ -307,8 +306,8 @@ const BrowseEvents = () => {
         </div>
 
         {filteredEvents.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">
+          <div className="flex justify-center items-center h-64">
+            <p className="text-gray-800 text-2xl font-bold">
               No events found matching your criteria
             </p>
           </div>

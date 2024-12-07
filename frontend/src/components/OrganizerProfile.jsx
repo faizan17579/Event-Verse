@@ -65,7 +65,13 @@ const Profile = () => {
   }
 
   return (
-    <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 min-h-screen text-white">
+    <div
+      className="min-h-screen  text-white"
+      style={{
+        backgroundImage: `linear-gradient(to right, rgba(242, 98, 152, 0.3), rgba(242, 98, 152, 0.7)), url('/images/login_bc.png')`,
+        backgroundSize: "cover",
+      }}
+    >
       {/* Navbar */}
       <nav className="bg-gray-800 text-white shadow-lg sticky top-0 z-10">
         <div className="container mx-auto flex justify-between items-center p-5">

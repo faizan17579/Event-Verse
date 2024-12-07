@@ -104,7 +104,13 @@ const ManageEvents = () => {
     }
   };
   return (
-    <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 min-h-screen text-white">
+    <div
+      className="min-h-screen flex flex-col text-white"
+      style={{
+        backgroundImage: `linear-gradient(to right, rgba(242, 98, 152, 0.3), rgba(242, 98, 152, 0.7)), url('/images/login_bc.png')`,
+        backgroundSize: "cover",
+      }}
+    >
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="loader border-t-4 border-b-4 border-yellow-400 h-12 w-12 rounded-full animate-spin"></div>
