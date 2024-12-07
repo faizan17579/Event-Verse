@@ -47,7 +47,7 @@ const EventAnalytics = () => {
   const fetchSummaryData = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/analytics/${org.id}`
+        `http://localhost:5000/api/events/analytics/${org.id}`
       );
 
       if (!response.ok) {
@@ -62,6 +62,9 @@ const EventAnalytics = () => {
           setTicketSalesData(data.ticketSalesData || []);
           setRevenueDistribution(data.revenueDistribution || []);
           setFeedbackSummary(data.feedbackSummary || {});
+
+        
+          console.log("Revenue Distribution:", data.revenueDistribution);
         } else {
           console.error("No data returned from analytics API.");
         }
@@ -75,6 +78,45 @@ const EventAnalytics = () => {
   useEffect(() => {
     fetchSummaryData();
   }, []);
+  
+const handleDownloadReport = async () => {
+  try {
+    const response = await fetch("http://localhost:5000/api/events/download-analytics", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orgId: org.id,
+        orgName: org.name,
+        organizerEmail: org.email,
+        totalRevenue: summary.totalRevenue,
+       totalfeedback: summary.checkInsCompleted,
+       totalTicketsSold: summary.totalTicketsSold,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server responded with status ${response.status}`);
+    }
+
+    const blob = await response.blob();  // Handle PDF response
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Report-${org.id}.pdf`;
+
+    document.body.appendChild(a);
+    a.click();
+
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }, 100);
+  } catch (error) {
+    console.error("Failed to download  report:", error);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-purple-600 text-white">
@@ -102,7 +144,7 @@ const EventAnalytics = () => {
           <div className="bg-white text-black p-6 rounded-lg shadow-lg">
             <FaCheckCircle className="text-yellow-500 text-3xl mb-4" />
             <h3 className="text-2xl font-bold">{summary.checkInsCompleted}</h3>
-            <p className="text-gray-700">Check-ins Completed</p>
+            <p className="text-gray-700">Total Feedback</p>
           </div>
           <div className="bg-white text-black p-6 rounded-lg shadow-lg">
             <FaChartLine className="text-red-500 text-3xl mb-4" />
@@ -142,7 +184,7 @@ const EventAnalytics = () => {
             <h3 className="text-xl font-bold mb-4">Revenue Distribution</h3>
             <Pie
               data={{
-                labels: revenueDistribution.map((d) => d.ticketType),
+                labels: revenueDistribution.map((d) => d.eventName),
                 datasets: [
                   {
                     data: revenueDistribution.map((d) => d.revenue),
@@ -176,7 +218,7 @@ const EventAnalytics = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Word Cloud */}
             <div>
-              <h4 className="text-lg font-semibold mb-2">Word Cloud</h4>
+              <h4 className="text-lg font-semibold mb-2">Comments</h4>
               <div className="flex flex-wrap gap-2">
                 {feedbackSummary.wordCloud.map((word, idx) => (
                   <span
@@ -201,12 +243,10 @@ const EventAnalytics = () => {
 
         {/* Call-to-Action Section */}
         <div className="text-center">
-          <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-4">
+          <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-4"  onClick={handleDownloadReport}>
             Download Report
           </button>
-          <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-            View Performance Tips
-          </button>
+         
         </div>
       </div>
     </div>
