@@ -1,10 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 const OrganizerDashboard = () => {
   // get user from local storage
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      try {
+        // Decode the JWT payload
+        const payload = JSON.parse(atob(token.split(".")[1])); // Decoding the payload
+
+        // Extract the user object from the decoded payload
+        const userData = payload.us;
+
+        // Set the user object in the state
+        setUser(userData);
+        // Full user object
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
+    }
+  }, []);
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white">
       {/* Navbar */}
@@ -46,7 +67,7 @@ const OrganizerDashboard = () => {
               Profile
             </NavLink>
             <NavLink
-              to="/logout"
+              to="/"
               className={({ isActive }) =>
                 isActive
                   ? "text-yellow-400 border-b-2 border-yellow-400 pb-1"
@@ -143,7 +164,7 @@ const OrganizerDashboard = () => {
       {/* Header */}
       <header className="text-center py-20">
         <h2 className="text-5xl font-extrabold mb-6 animate-bounce">
-          Welcome, Organizer
+          Welcome {user?.name || "Guest"}
         </h2>
         <p className="text-lg max-w-2xl mx-auto">
           Manage your events, track sales, and engage with attendees all from
@@ -192,7 +213,7 @@ const OrganizerDashboard = () => {
               feedback from attendees.
             </p>
             <Link
-              to="/analytics"
+              to="/event-analytics"
               className="block mt-4 text-center bg-purple-600 text-white py-2 rounded-full hover:bg-purple-700 transition"
             >
               View Analytics
@@ -204,6 +225,17 @@ const OrganizerDashboard = () => {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-6 text-center mt-auto">
         <p>© 2024 EventVerse. All rights reserved.</p>
+        <div className="flex justify-center gap-5 mt-4">
+          <a href="#" className="hover:text-yellow-400">
+            Facebook
+          </a>
+          <a href="#" className="hover:text-yellow-400">
+            Twitter
+          </a>
+          <a href="#" className="hover:text-yellow-400">
+            LinkedIn
+          </a>
+        </div>
       </footer>
     </div>
   );

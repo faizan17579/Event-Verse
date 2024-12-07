@@ -1,9 +1,14 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import connectDB from './config/database.js';
-import eventRoutes from './routes/eventRoutes.js';
-import userRoutes from './routes/userRoutes.js';
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import connectDB from "./config/database.js";
+import eventRoutes from "./routes/eventRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import ticketRoute from "./routes/ticketroutes.js";
+import feedbackRoutes from "./routes/FeedbackRoutes.js";
+import ActivitiesRoutes from "./routes/useractivityroutes.js";
+
+
 
 dotenv.config();
 connectDB();
@@ -15,12 +20,15 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/users', userRoutes);
-app.use('/api/events', eventRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/events", eventRoutes);
+app.use("/api/tickets", ticketRoute);
+app.use("/api/feedback", feedbackRoutes);
+app.use("/api/activities", ActivitiesRoutes);
 
 // Root route
-app.get('/', (req, res) => {
-  res.send('Backend is running!');
+app.get("/", (req, res) => {
+  res.send("Backend is running!");
 });
 
 // Start server

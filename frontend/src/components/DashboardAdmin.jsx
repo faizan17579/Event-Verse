@@ -167,7 +167,7 @@ const DashboardAdmin = () => {
               Monitor user activities and handle account issues efficiently.
             </p>
             <Link
-              to="/admin/users"
+              to="/all-users"
               className="block mt-4 text-center bg-blue-600 text-white py-2 rounded-full hover:bg-blue-700 transition"
             >
               View Users
@@ -212,7 +212,7 @@ const DashboardAdmin = () => {
             <h3 className="text-2xl font-bold mb-4">Feedback</h3>
             <p>Review user feedback to maintain high service quality.</p>
             <Link
-              to="/admin/feedback"
+              to="/all-feedback"
               className="block mt-4 text-center bg-yellow-600 text-white py-2 rounded-full hover:bg-yellow-700 transition"
             >
               Review Feedback
@@ -224,6 +224,17 @@ const DashboardAdmin = () => {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-6 text-center">
         <p>© 2024 EventVerse. All rights reserved.</p>
+        <div className="flex justify-center gap-5 mt-4">
+          <a href="#" className="hover:text-yellow-400">
+            Facebook
+          </a>
+          <a href="#" className="hover:text-yellow-400">
+            Twitter
+          </a>
+          <a href="#" className="hover:text-yellow-400">
+            LinkedIn
+          </a>
+        </div>
       </footer>
     </div>
   );

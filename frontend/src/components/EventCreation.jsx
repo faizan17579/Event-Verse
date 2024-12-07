@@ -21,7 +21,7 @@ const EventCreation = () => {
     e.preventDefault();
     try {
       // Ensure the logged-in user is available
-      if (!user || !user._id) {
+      if (!user) {
         alert("User not logged in. Please log in again.");
         return;
       }
@@ -29,7 +29,7 @@ const EventCreation = () => {
       const response = await fetch("http://localhost:5000/api/events/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, organizerid: user._id }), // Pass user._id as organizerId
+        body: JSON.stringify({ ...formData, organizerid: user.id }), // Pass user._id as organizerId
       });
 
       const data = await response.json();

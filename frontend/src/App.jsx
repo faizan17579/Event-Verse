@@ -21,8 +21,16 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import ManageEvents from "./components/ManageEvents";
 import BrowseEvents from "./components/BrowseEvents";
-//import StripeViewTickets from "./components/ViewTickets";
+import StripeViewTickets from "./components/Payment";
 import Profile from "./components/OrganizerProfile";
+import ViewTickets from "./components/ViewTickets";
+import EventFeedback from "./components/FeedbackEvents";
+import AllFeedback from "./components/ManageFeedback";
+import AllUsers from "./components/AllUsers";
+import ApproveEvents from "./components/ApproveEvents";
+import MyEvents from "./components/MyEvents";
+import TicketSalesPage from "./components/TicketSalesPage";
+import EventAnalytics from "./components/EventAnalytics";
 
 const App = () => {
   return (
@@ -37,8 +45,11 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard/attendee" element={<DashboardAttendee />} />
           <Route path="/browse-events" element={<BrowseEvents />} />
-          {/* <Route path="/view-tickets" element={<StripeViewTickets />} /> */}
+          <Route path="/my-tickets" element={<ViewTickets />} />
+
+          {<Route path="/payment" element={<StripeViewTickets />} />}
           <Route path="/attendee/event-search" element={<EventSearch />} />
+          <Route path="/attendee/events" element={<MyEvents />} />
           {/* <Route
             path="/attendee/event-dashboard"
             element={<EventDashboard />}
@@ -51,6 +62,12 @@ const App = () => {
           <Route path="/dashboard/admin" element={<DashboardAdmin />} />
           {/* <Route path="/dashboard/sponsor" element={<DashboardSponsor />} /> */}
           <Route path="/profile" element={<Profile />} />
+          <Route path="/feedback" element={<EventFeedback />} />
+          <Route path="/all-feedback" element={<AllFeedback />} />
+          <Route path="/all-users" element={<AllUsers />} />
+          <Route path="/admin/events" element={<ApproveEvents />} />
+          <Route path="/ticket-sales" element={<TicketSalesPage />} />
+          <Route path="/event-analytics" element={<EventAnalytics />} />
         </Routes>
       </Router>
     </div>
