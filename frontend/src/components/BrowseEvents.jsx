@@ -6,14 +6,22 @@ import {
   FaDollarSign,
   FaTicketAlt,
   FaGlobe,
+  FaLocationArrow,
+  FaMusic,
 } from "react-icons/fa";
 
 const BrowseEvents = () => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({ date: "", location: "", type: "" });
+  const [filters, setFilters] = useState({
+    date: "",
+    location: "",
+    type: "",
+    nearby: false,
+  });
   const [selectedTickets, setSelectedTickets] = useState({});
+  const [userLocation, setUserLocation] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -29,8 +37,22 @@ const BrowseEvents = () => {
   ];
 
   useEffect(() => {
+    fetchUserLocation();
     fetchEvents();
   }, []);
+
+  const fetchUserLocation = async () => {
+    try {
+      const response = await fetch(
+        "https://ipinfo.io/json?token=9082a1eb05bd36"
+      );
+      const data = await response.json();
+      setUserLocation(data.city || "Unknown Location");
+    } catch (err) {
+      console.error("Error fetching user location:", err);
+      setUserLocation("Unknown Location");
+    }
+  };
 
   const fetchEvents = async () => {
     try {
@@ -74,9 +96,35 @@ const BrowseEvents = () => {
       const matchesType =
         !filters.type ||
         event.type.toLowerCase().includes(filters.type.toLowerCase());
-      return matchesDate && matchesLocation && matchesType;
+      const matchesNearby =
+        !filters.nearby ||
+        (userLocation &&
+          event.location.toLowerCase().includes(userLocation.toLowerCase()));
+      return matchesDate && matchesLocation && matchesType && matchesNearby;
     });
     setFilteredEvents(filtered);
+  };
+
+  const toggleNearbyFilter = () => {
+    setFilters((prev) => {
+      const updatedFilters = { ...prev, nearby: !prev.nearby };
+      if (!prev.nearby) {
+        // If turning on nearby filter, apply it immediately
+        const filtered = events.filter((event) =>
+          event.location.toLowerCase().includes(userLocation.toLowerCase())
+        );
+        setFilteredEvents(filtered);
+      } else {
+        // If turning off nearby filter, reset filters
+        setFilteredEvents(events);
+      }
+      return updatedFilters;
+    });
+  };
+
+  const resetFilters = () => {
+    setFilters({ date: "", location: "", type: "", nearby: false });
+    setFilteredEvents(events); // Reset to the full event list
   };
 
   const handleTicketSelection = async (event, ticketCount) => {
@@ -164,12 +212,32 @@ const BrowseEvents = () => {
             />
           </div>
         </div>
-        <button
-          onClick={applyFilters}
-          className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-2 px-8 rounded-full transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          Apply Filters
-        </button>
+        <div className="flex items-center mt-6 space-x-4">
+          <button
+            onClick={applyFilters}
+            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-8 rounded-full transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Apply Filters
+          </button>
+
+          <button
+            onClick={resetFilters}
+            className="bg-red-600 hover:bg-red-700 text-white py-2 px-8 rounded-full transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Reset Filters
+          </button>
+          <button
+            onClick={toggleNearbyFilter}
+            className={`flex items-center py-2 px-8 rounded-full transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+              filters.nearby
+                ? "bg-green-600 hover:bg-green-700 text-white"
+                : "bg-gray-600 hover:bg-gray-700 text-white"
+            }`}
+          >
+            <FaLocationArrow className="mr-2" />
+            {filters.nearby ? "Nearby Filter On" : "Nearby Filter Off"}
+          </button>
+        </div>
       </div>
 
       <div className="container mx-auto px-6 py-10">
@@ -196,6 +264,10 @@ const BrowseEvents = () => {
                   <p className="flex items-center">
                     <FaMapMarkerAlt className="mr-2 h-4 w-4" />
                     {event.location}
+                  </p>
+                  <p className="flex items-center">
+                    <FaMusic className="mr-2 h-4 w-4" />
+                    {event.type}
                   </p>
                   <p className="flex items-center">
                     <FaDollarSign className="mr-2 h-4 w-4" />${event.amount}
