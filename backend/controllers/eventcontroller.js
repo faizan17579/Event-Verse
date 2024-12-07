@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import Stripe from "stripe";
 import PDFDocument from "pdfkit";
 import Feedback from "../models/Feedback.js";
+import Ticket from "../models/ticket.js";
 
 const stripe = new Stripe(
   "sk_test_51QS0yZJDUj9ArTtKD6jx9SHeZFMGmcETkZF9Bag1pvU8yG1KtBpus7fPE75VwavXVwoeuWfl4SwHBSzI7CHQk0Rw00z4tWPCLM"
@@ -125,6 +126,49 @@ export const downloadTicket = async (req, res) => {
   }
 };
 
+// Route: Download E-Ticket
+export const downloadAnalytics = async (req, res) => {
+  const {orgId,orgName,organizerEmail,totalRevenue,totalfeedback,totalTicketsSold } = req.body;
+
+  try {
+    if (!organizerEmail) {
+      return res
+        .status(400)
+        .json({ message: " attendee email are required." });
+    }
+
+   
+
+  
+
+    const doc = new PDFDocument();
+    const chunks = [];
+    doc.on("data", (chunk) => chunks.push(chunk));
+    doc.on("end", () => {
+      const pdfBuffer = Buffer.concat(chunks);
+      res.set({
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="E-Ticket-${organizerEmail}.pdf"`,
+      });
+      res.send(pdfBuffer);
+    });
+
+    doc.fontSize(20).text("Report", { align: "center" });
+    doc.moveDown();
+    doc.fontSize(14).text(`Organizer Email: ${organizerEmail}`);
+    doc.text(`Organizer Name: ${orgName}`);
+    doc.text(`Total Revenue: ${totalRevenue}`);
+    doc.text(`Total Feedback: ${totalfeedback}`);
+    doc.text(`Total Tickets Sold: ${totalTicketsSold}`);
+    doc.end();
+
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ message: "An error occurred while generating the Analytic." });
+  }
+};
 // Fetch events with optional filters
 export const searchEvents = async (req, res) => {
   try {
@@ -423,8 +467,19 @@ export const getEventAnalytics = async (req, res) => {
       return res.status(400).json({ error: "Organizer ID is required" });
     }
 
+
     const filter = { createdBy: organizerId };
     const events = await Event.find(filter);
+    // Fetch feedback with respect to events 
+  const eventIds = events.map(event => event._id);
+
+    // Step 2: Get feedback for these events
+   const feedback = await Feedback.find({ eventId: { $in: eventIds } });
+
+    // Step 3: Map feedback to include eventName and other details
+    const feedbackData = feedback.map(item => ({
+      comment: item.comment,
+    }));
 
     if (!events || events.length === 0) {
       return res
@@ -445,12 +500,7 @@ export const getEventAnalytics = async (req, res) => {
 
     const totalEvents = events.length;
 
-    const checkInsCompleted = events.reduce(
-      (sum, event) =>
-        sum +
-        (event.attendees?.filter((attendee) => attendee.checkedIn).length || 0),
-      0
-    );
+    const checkInsCompleted =feedback.length;
 
     const netProfit =
       totalRevenue -
@@ -461,24 +511,38 @@ export const getEventAnalytics = async (req, res) => {
       ticketsSold: event.attendees?.length || 0,
     }));
 
-    const revenueDistribution = events.reduce((acc, event) => {
-      event.ticketTypes?.forEach((type) => {
-        const existing = acc.find((item) => item.ticketType === type.name);
-        if (existing) {
-          existing.revenue += (type.price || 0) * (type.sold || 0);
-        } else {
-          acc.push({
-            ticketType: type.name,
-            revenue: (type.price || 0) * (type.sold || 0),
-          });
-        }
-      });
+ 
+    // Fetch all ticket data from the database
+    const tickets = await Ticket.find();
+
+    // Reduce the ticket data to calculate revenue distribution
+    const revenueDistribution = tickets.reduce((acc, ticket) => {
+      // Find if the ticket type already exists in the accumulator
+      const existing = acc.find((item) => item.eventName === ticket.eventName);
+      if (existing) {
+        // Update the existing entry with additional revenue and tickets
+        existing.revenue += ticket.totalPrice;
+        existing.ticketsBooked += ticket.ticketsBooked;
+      } else {
+        // Add a new entry for this event
+        acc.push({
+          eventName: ticket.eventName,
+          revenue: ticket.totalPrice,
+          ticketsBooked: ticket.ticketsBooked,
+        });
+      }
       return acc;
     }, []);
+ 
+
+
+
+ 
 
     const feedbackSummary = {
-      wordCloud: ["excellent", "amazing", "good", "positive", "engaging"], // Example words
-      overallRating: 4.5, // Example rating
+     //add comment from feedback data to word cloud
+     wordCloud: feedbackData.map(item => item.comment).join(' ').split(' '),
+      overallRating: feedback.reduce((sum, item) => sum + item.rating, 0) / feedback.length
     };
 
     res.status(200).json({
