@@ -230,6 +230,15 @@ const AllUsers = () => {
                 <p><strong>Submitted At:</strong> {new Date(activity.date).toLocaleString()}</p>
               </div>
             );
+          case "Event":
+            return (
+              <div key={`${userId}-${idx}`} className="p-4 bg
+              -gray-800 rounded-lg shadow">
+                <p><strong>Type:</strong> Event</p>
+                <p><strong>Action:</strong> {activity.action}</p>
+                <p><strong>Created At:</strong> {new Date(activity.date).toLocaleString()}</p>
+              </div>
+            );
 
           default:
             return (

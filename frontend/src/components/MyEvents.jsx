@@ -145,12 +145,12 @@ const MyEvents = () => {
 
   return (
     <div
-      className="min-h-screen text-white"
-      style={{
-        backgroundImage: `linear-gradient(to right, rgba(242, 98, 152, 0.3), rgba(242, 98, 152, 0.7)), url('./images/login_bc.png')`,
-        backgroundSize: "cover",
-      }}
-    >
+    className="min-h-screen text-white"
+    style={{
+      backgroundImage: `linear-gradient(to right, rgba(242, 98, 152, 0.3), rgba(242, 98, 152, 0.7)), url('./images/login_bc.png')`,
+      backgroundSize: "cover",
+    }}
+  >
       <h1 className="text-4xl font-extrabold mb-10 text-center drop-shadow-lg">
         <FaTicketAlt className="inline-block mr-3 text-yellow-400 animate-bounce" />
         My Events
