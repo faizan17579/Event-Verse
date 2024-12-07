@@ -120,7 +120,7 @@ const ApproveEvents = () => {
     <div
       className="min-h-screen text-white"
       style={{
-        backgroundImage: `linear-gradient(to right, rgba(242, 98, 152, 0.3), rgba(242, 98, 152, 0.7)), url('./images/login_bc.png')`,
+        backgroundImage: `linear-gradient(to right, rgba(242, 98, 152, 0.3), rgba(242, 98, 152, 0.7)), url('/images/login_bc.png')`,
         backgroundSize: "cover",
       }}
     >
@@ -131,7 +131,7 @@ const ApproveEvents = () => {
       )}
       <header className="text-center py-10">
         <h1 className="text-4xl sm:text-5xl font-extrabold mb-6 animate-bounce">
-          Manage <span className="text-yellow-400">Events</span>
+          Approve <span className="text-yellow-400">Events</span>
         </h1>
         <p className="text-xl max-w-3xl mx-auto text-gray-100">
           Approve or reject events submitted by organizers.

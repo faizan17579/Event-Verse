@@ -30,6 +30,7 @@ import AllUsers from "./components/AllUsers";
 import ApproveEvents from "./components/ApproveEvents";
 import MyEvents from "./components/MyEvents";
 import TicketSalesPage from "./components/TicketSalesPage";
+import EventAnalytics from "./components/EventAnalytics";
 
 const App = () => {
   return (
@@ -66,6 +67,7 @@ const App = () => {
           <Route path="/all-users" element={<AllUsers />} />
           <Route path="/admin/events" element={<ApproveEvents />} />
           <Route path="/ticket-sales" element={<TicketSalesPage />} />
+          <Route path="/event-analytics" element={<EventAnalytics />} />
         </Routes>
       </Router>
     </div>

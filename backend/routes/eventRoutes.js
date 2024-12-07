@@ -15,6 +15,7 @@ import {
   geteventfororg,
   getTrendingEvents,
   getTicketSales,
+  getEventAnalytics,
 } from "../controllers/eventcontroller.js";
 
 const router = express.Router();
@@ -59,5 +60,7 @@ router.get("/org/events", geteventfororg);
 router.get("/trending", getTrendingEvents);
 
 router.get("/ticket-sales", getTicketSales);
+
+router.get("/analytics/:organizerId", getEventAnalytics);
 
 export default router;

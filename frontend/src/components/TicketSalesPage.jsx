@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { FaChartLine, FaTicketAlt, FaMoneyBillWave } from "react-icons/fa";
 
 const TicketSalesPage = () => {
   // Retrieve the organizer's data from localStorage
   const org = JSON.parse(localStorage.getItem("user"));
   const [salesData, setSalesData] = useState([]);
-  const [summary, setSummary] = useState({
-    totalRevenue: 0,
-    totalTicketsSold: 0,
-    totalEvents: 0,
-  });
   const [filters, setFilters] = useState({
     eventName: "",
     dateRange: "",
-    organizerId: org?.id || "",  // Pass the actual organizer ID
+    organizerId: org?.id || "", // Pass the actual organizer ID
   });
 
   // Fetch sales data from the backend API
@@ -33,8 +27,7 @@ const TicketSalesPage = () => {
       const data = await response.json();
 
       if (data) {
-        const { summary, salesData } = data;
-        setSummary(summary);
+        const { salesData } = data; // Only focus on salesData
         setSalesData(salesData);
       }
     } catch (error) {
@@ -63,30 +56,11 @@ const TicketSalesPage = () => {
       <header className="text-center py-10">
         <h1 className="text-4xl font-extrabold">Ticket Sales</h1>
         <p className="text-lg mt-2">
-          Monitor ticket sales, track revenue, and ensure event success.
+          Monitor ticket sales and ensure event success.
         </p>
       </header>
 
       <div className="container mx-auto px-6 py-6">
-        {/* Sales Summary */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white text-black p-6 rounded-lg shadow-lg">
-            <FaMoneyBillWave className="text-green-500 text-3xl mb-4" />
-            <h3 className="text-2xl font-bold">${summary.totalRevenue}</h3>
-            <p className="text-gray-700">Total Revenue</p>
-          </div>
-          <div className="bg-white text-black p-6 rounded-lg shadow-lg">
-            <FaTicketAlt className="text-blue-500 text-3xl mb-4" />
-            <h3 className="text-2xl font-bold">{summary.totalTicketsSold}</h3>
-            <p className="text-gray-700">Total Tickets Sold</p>
-          </div>
-          <div className="bg-white text-black p-6 rounded-lg shadow-lg">
-            <FaChartLine className="text-yellow-500 text-3xl mb-4" />
-            <h3 className="text-2xl font-bold">{summary.totalEvents}</h3>
-            <p className="text-gray-700">Total Events</p>
-          </div>
-        </div>
-
         {/* Filters Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           {/* Filter Inputs */}
@@ -114,18 +88,18 @@ const TicketSalesPage = () => {
               Apply
             </button>
             <button
-  onClick={() => {
-    setFilters({
-      eventName: "",
-      dateRange: "",
-      organizerId: org?.id || "",
-    });
-    fetchSalesData();  // Fetch fresh data after resetting
-  }}
-  className="bg-gray-500 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-600"
->
-  Reset
-</button>
+              onClick={() => {
+                setFilters({
+                  eventName: "",
+                  dateRange: "",
+                  organizerId: org?.id || "",
+                });
+                fetchSalesData(); // Fetch fresh data after resetting
+              }}
+              className="bg-gray-500 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-600"
+            >
+              Reset
+            </button>
           </div>
         </div>
 
@@ -137,8 +111,10 @@ const TicketSalesPage = () => {
               <tr>
                 <th>Event Name</th>
                 <th>Tickets Sold</th>
+                <th>Remaining Tickets</th>
                 <th>Revenue</th>
                 <th>Date</th>
+                <th>Location</th>
               </tr>
             </thead>
             <tbody>
@@ -146,8 +122,10 @@ const TicketSalesPage = () => {
                 <tr key={index} className="text-center">
                   <td>{sale.eventName}</td>
                   <td>{sale.ticketsSold}</td>
+                  <td>{sale.remainingTickets}</td>
                   <td>${sale.revenue}</td>
                   <td>{new Date(sale.date).toLocaleDateString()}</td>
+                  <td>{sale.location}</td>
                 </tr>
               ))}
             </tbody>

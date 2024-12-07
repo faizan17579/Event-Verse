@@ -147,7 +147,7 @@ const MyEvents = () => {
     <div
       className="min-h-screen text-white"
       style={{
-        backgroundImage: `linear-gradient(to right, rgba(242, 98, 152, 0.3), rgba(242, 98, 152, 0.7)), url('./images/login_bc.png')`,
+        backgroundImage: `linear-gradient(to right, rgba(242, 98, 152, 0.3), rgba(242, 98, 152, 0.7)), url('/images/login_bc.png')`,
         backgroundSize: "cover",
       }}
     >

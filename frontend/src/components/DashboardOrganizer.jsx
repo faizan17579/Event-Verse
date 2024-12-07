@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 const OrganizerDashboard = () => {
@@ -17,7 +17,7 @@ const OrganizerDashboard = () => {
 
         // Extract the user object from the decoded payload
         const userData = payload.us;
-        
+
         // Set the user object in the state
         setUser(userData);
         // Full user object
@@ -67,7 +67,7 @@ const OrganizerDashboard = () => {
               Profile
             </NavLink>
             <NavLink
-              to="/logout"
+              to="/"
               className={({ isActive }) =>
                 isActive
                   ? "text-yellow-400 border-b-2 border-yellow-400 pb-1"
@@ -164,7 +164,7 @@ const OrganizerDashboard = () => {
       {/* Header */}
       <header className="text-center py-20">
         <h2 className="text-5xl font-extrabold mb-6 animate-bounce">
-          Welcome  {user?.name || "Guest"}
+          Welcome {user?.name || "Guest"}
         </h2>
         <p className="text-lg max-w-2xl mx-auto">
           Manage your events, track sales, and engage with attendees all from
@@ -213,7 +213,7 @@ const OrganizerDashboard = () => {
               feedback from attendees.
             </p>
             <Link
-              to="/analytics"
+              to="/event-analytics"
               className="block mt-4 text-center bg-purple-600 text-white py-2 rounded-full hover:bg-purple-700 transition"
             >
               View Analytics
