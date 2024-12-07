@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { FaMapMarkerAlt, FaCalendarAlt, FaDollarSign, FaGlobe } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaCalendarAlt,
+  FaDollarSign,
+  FaGlobe,
+  FaMusic,
+} from "react-icons/fa";
 
 const FeedbackEvents = () => {
   const [events, setEvents] = useState([]);
@@ -71,6 +77,11 @@ const FeedbackEvents = () => {
     setFilteredEvents(filtered);
   };
 
+  const resetFilters = () => {
+    setFilters({ date: "", location: "", type: "" }); // Clear all filters
+    setFilteredEvents(events); // Reset filtered events to original list
+  };
+
   const handleFeedbackChange = (eventId, field, value) => {
     setFeedback((prev) => ({
       ...prev,
@@ -80,30 +91,31 @@ const FeedbackEvents = () => {
       },
     }));
   };
+
   const handleSubmitFeedback = async (eventId) => {
     const eventFeedback = feedback[eventId];
     if (!eventFeedback || !eventFeedback.rating || !eventFeedback.comment) {
       alert("Please provide a rating and comment.");
       return;
     }
-   console.log(eventId, eventFeedback);
-   const user = JSON.parse(localStorage.getItem("user"));
+    console.log(eventId, eventFeedback);
+    const user = JSON.parse(localStorage.getItem("user"));
     try {
       const response = await fetch("http://localhost:5000/api/feedback/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           eventId,
-          userId:user.id, // Replace with actual logged-in user ID
+          userId: user.id, // Replace with actual logged-in user ID
           rating: eventFeedback.rating,
           comment: eventFeedback.comment,
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error("Failed to submit feedback");
       }
-  
+
       const data = await response.json();
       alert(data.message);
       console.log("Feedback submitted:", data.feedback);
@@ -112,7 +124,6 @@ const FeedbackEvents = () => {
       alert("An error occurred while submitting your feedback.");
     }
   };
-  
 
   if (loading) {
     return (
@@ -180,12 +191,20 @@ const FeedbackEvents = () => {
             />
           </div>
         </div>
-        <button
-          onClick={applyFilters}
-          className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-2 px-8 rounded-full transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          Apply Filters
-        </button>
+        <div className="flex items-center space-x-4 mt-6">
+          <button
+            onClick={applyFilters}
+            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-8 rounded-full transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Apply Filters
+          </button>
+          <button
+            onClick={resetFilters}
+            className="bg-red-600 hover:bg-red-700 text-white py-2 px-8 rounded-full transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Reset Filters
+          </button>
+        </div>
       </div>
 
       <div className="container mx-auto px-6 py-10">
@@ -212,6 +231,10 @@ const FeedbackEvents = () => {
                   <p className="flex items-center">
                     <FaMapMarkerAlt className="mr-2 h-4 w-4" />
                     {event.location}
+                  </p>
+                  <p className="flex items-center">
+                    <FaMusic className="mr-2 h-4 w-4" />
+                    {event.type}
                   </p>
                   <p className="flex items-center">
                     <FaDollarSign className="mr-2 h-4 w-4" />${event.amount}
