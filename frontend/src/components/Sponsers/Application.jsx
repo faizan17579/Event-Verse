@@ -137,15 +137,18 @@ const ApplyForSponsorship = () => {
 
   const handleSponsorshipSubmission = async (event) => {
     const details = sponsorshipDetails[event._id];
-    if (!details || !details.amount || !details.companyName || !details.contactNumber) {
+    if (
+      !details ||
+      !details.amount ||
+      !details.companyName ||
+      !details.contactNumber
+    ) {
       alert("Please fill in all sponsorship details");
       return;
     }
 
     try {
-      console.log(event._id);
       const user = JSON.parse(localStorage.getItem("user"));
-      
 
       const response = await fetch("http://localhost:5000/api/sponsor/submit", {
         method: "POST",
@@ -153,12 +156,12 @@ const ApplyForSponsorship = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            userId: user.id, // Replace with actual user ID
-            companyName: details.companyName,
-            contactNumber: details.contactNumber,
-            eventId: event._id,
-            amountSponsored: details.amount,
-          }),
+          userId: user.id, // Replace with actual user ID
+          companyName: details.companyName,
+          contactNumber: details.contactNumber,
+          eventId: event._id,
+          amountSponsored: details.amount,
+        }),
       });
 
       if (!response.ok) {
@@ -166,7 +169,6 @@ const ApplyForSponsorship = () => {
       }
 
       const data = await response.json();
-      console.log("Sponsorship details submitted for event:", event._id, data);
 
       // Navigate to a confirmation or success page
       navigate("/sponsor/confirmation", {
@@ -177,7 +179,9 @@ const ApplyForSponsorship = () => {
       });
     } catch (error) {
       console.error("Error submitting sponsorship application:", error);
-      alert("Failed to submit sponsorship application. Please try again later.");
+      alert(
+        "Failed to submit sponsorship application. Please try again later."
+      );
     }
   };
 
@@ -312,7 +316,11 @@ const ApplyForSponsorship = () => {
                     placeholder="Sponsorship Amount"
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     onChange={(e) =>
-                      handleSponsorshipDetailsChange(event._id, "amount", e.target.value)
+                      handleSponsorshipDetailsChange(
+                        event._id,
+                        "amount",
+                        e.target.value
+                      )
                     }
                   />
                   <input
@@ -320,7 +328,11 @@ const ApplyForSponsorship = () => {
                     placeholder="Company Name"
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     onChange={(e) =>
-                      handleSponsorshipDetailsChange(event._id, "companyName", e.target.value)
+                      handleSponsorshipDetailsChange(
+                        event._id,
+                        "companyName",
+                        e.target.value
+                      )
                     }
                   />
                   <input
@@ -328,7 +340,11 @@ const ApplyForSponsorship = () => {
                     placeholder="Contact Number"
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     onChange={(e) =>
-                      handleSponsorshipDetailsChange(event._id, "contactNumber", e.target.value)
+                      handleSponsorshipDetailsChange(
+                        event._id,
+                        "contactNumber",
+                        e.target.value
+                      )
                     }
                   />
                   <button

@@ -216,7 +216,6 @@ export const bookTickets = async (req, res) => {
       amount: amountInCents,
       currency: "usd",
     });
-    console.log(paymentIntent);
 
     return res.status(200).json({
       clientSecret: paymentIntent.client_secret,
@@ -562,7 +561,7 @@ export const getEventAnalytics = async (req, res) => {
 export const generateQrCode = async (req, res) => {
   try {
     const { eventId, tickets, attendeeEmail, totalAmount } = req.body;
-    console.log("Request Body:", req.body); // Log the incoming data
+
     // Validate required fields
     if (!eventId || !tickets || !attendeeEmail || !totalAmount) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -585,7 +584,6 @@ export const generateQrCode = async (req, res) => {
   }
 };
 
-
 // Apply discount to event tickets
 export const applyDiscount = async (req, res) => {
   const { eventId, discountPercentage } = req.body;
@@ -600,7 +598,6 @@ export const applyDiscount = async (req, res) => {
     // add upto three decimalm places
     event.amount = (event.amount - discountAmount).toFixed(3);
 
-   
     await event.save();
 
     res.status(200).json({ message: "Discount applied successfully", event });
@@ -609,5 +606,3 @@ export const applyDiscount = async (req, res) => {
     res.status(500).json({ message: "Failed to apply discount" });
   }
 };
-
-

@@ -100,7 +100,6 @@ const FeedbackEvents = () => {
       alert("Please provide a rating and comment.");
       return;
     }
-    console.log(eventId, eventFeedback);
     const user = JSON.parse(localStorage.getItem("user"));
     try {
       const response = await fetch("http://localhost:5000/api/feedback/add", {
@@ -120,7 +119,6 @@ const FeedbackEvents = () => {
 
       const data = await response.json();
       alert(data.message);
-      console.log("Feedback submitted:", data.feedback);
     } catch (error) {
       console.error("Error submitting feedback:", error);
       alert("An error occurred while submitting your feedback.");

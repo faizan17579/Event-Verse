@@ -24,8 +24,6 @@ export const saveUserProfile = async (req, res) => {
     // Save the updated user data to the database
     await user.save();
 
-    console.log(user);
-
     // Send a success response
     res
       .status(200)

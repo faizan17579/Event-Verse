@@ -10,7 +10,6 @@ export const getUserActivities = async (req, res) => {
 
     const user = await User.findById(userId);
 
-    console.log(user);
     // if user is organizer
     if (user.role === "Organizer") {
       const events = await Event.find({ createdBy: userId }).sort({

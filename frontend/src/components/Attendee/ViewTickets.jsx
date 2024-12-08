@@ -49,8 +49,6 @@ const ViewTickets = () => {
           }),
         }
       );
-      // const responseText = await response.text();
-      // console.log("Response from server:", responseText);
 
       if (!response.ok) throw new Error("Failed to generate E-Ticket");
 

@@ -56,8 +56,6 @@ const MyEvents = () => {
         );
         const data = await response.json();
 
-        console.log("Trending Events Data:", data);
-
         const selectedEvents = data.map((event) => {
           return {
             ...event,
@@ -110,7 +108,6 @@ const MyEvents = () => {
         }
       );
       // const responseText = await response.text();
-      // console.log("Response from server:", responseText);
 
       if (!response.ok) throw new Error("Failed to generate E-Ticket");
 

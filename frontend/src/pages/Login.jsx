@@ -12,7 +12,6 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      console.log(email, password, role);
       const response = await axios.post(
         `http://localhost:5000/api/users/login/${role}`,
         { email, password }
@@ -23,8 +22,6 @@ const Login = () => {
       const user = response.data.user;
 
       const token = response.data.token;
-
-      console.log(user);
 
       // Save user data to localStorage (or context) for later use
       localStorage.setItem("user", JSON.stringify(user));

@@ -62,8 +62,6 @@ const EventAnalytics = () => {
           setTicketSalesData(data.ticketSalesData || []);
           setRevenueDistribution(data.revenueDistribution || []);
           setFeedbackSummary(data.feedbackSummary || {});
-
-          console.log("Revenue Distribution:", data.revenueDistribution);
         } else {
           console.error("No data returned from analytics API.");
         }
