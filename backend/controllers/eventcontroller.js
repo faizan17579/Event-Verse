@@ -584,3 +584,30 @@ export const generateQrCode = async (req, res) => {
     res.status(500).json({ message: "Failed to generate payment link" });
   }
 };
+
+
+// Apply discount to event tickets
+export const applyDiscount = async (req, res) => {
+  const { eventId, discountPercentage } = req.body;
+
+  try {
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    const discountAmount = (event.amount * discountPercentage) / 100;
+    // add upto three decimalm places
+    event.amount = (event.amount - discountAmount).toFixed(3);
+
+   
+    await event.save();
+
+    res.status(200).json({ message: "Discount applied successfully", event });
+  } catch (error) {
+    console.error("Error applying discount:", error);
+    res.status(500).json({ message: "Failed to apply discount" });
+  }
+};
+
+

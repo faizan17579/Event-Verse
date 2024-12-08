@@ -37,6 +37,7 @@ import Application from "./components/Sponsers/Application"
 import Confirmation from "./components/Sponsers/ConfirmPage";
 import ViewApplications from "./components/Sponsers/ViewApplications";
 import ManageSponsorApplications from "./components/Organizer/ManageSponserApplications";
+import SetDiscounts from "./components/Admin/SetDiscounts";
 
 const App = () => {
   return (
@@ -81,6 +82,7 @@ const App = () => {
           <Route path="/sponsor/applications"
         element={<ViewApplications/>}/>
                 <Route path="/manage-sponsor-applications" element={<ManageSponsorApplications />} />
+                <Route path="/admin/discounts" element={<SetDiscounts />} />
         </Routes>
        
       </Router>

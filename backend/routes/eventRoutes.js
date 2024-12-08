@@ -18,6 +18,7 @@ import {
   getEventAnalytics,
   generateQrCode,
   downloadAnalytics,
+  applyDiscount
 } from "../controllers/eventcontroller.js";
 
 const router = express.Router();
@@ -69,5 +70,7 @@ router.get("/analytics/:organizerId", getEventAnalytics);
 router.post("/generate-qr", generateQrCode);
 
 router.post("/download-analytics", downloadAnalytics);
+
+router.put("/discounts/apply", applyDiscount);
 
 export default router;

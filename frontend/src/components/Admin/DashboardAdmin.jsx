@@ -7,6 +7,7 @@ import {
   FaComments,
 } from "react-icons/fa";
 import { MdEventAvailable } from "react-icons/md";
+import { GiPriceTag } from "react-icons/gi";
 
 const DashboardAdmin = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -199,6 +200,19 @@ const DashboardAdmin = () => {
               className="block mt-4 text-center bg-yellow-600 text-white py-2 rounded-full hover:bg-yellow-700 transition"
             >
               Review Feedback
+            </Link>
+          </div>
+
+          {/* Card 5: Give Discounts */}
+          <div className="bg-gray-100 text-black p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
+            <GiPriceTag className="text-4xl mb-4 text-red-500" />
+            <h3 className="text-2xl font-bold mb-4">Give Discounts</h3>
+            <p>Set overall discounts for all events on the platform.</p>
+            <Link
+              to="/admin/discounts"
+              className="block mt-4 text-center bg-red-600 text-white py-2 rounded-full hover:bg-red-700 transition"
+            >
+              Set Discounts
             </Link>
           </div>
         </div>
