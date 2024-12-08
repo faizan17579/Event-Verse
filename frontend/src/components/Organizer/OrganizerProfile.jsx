@@ -14,11 +14,34 @@ const Profile = () => {
 
   // Fetch user details from local storage when the component loads
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser) {
-      setUser(storedUser);
-      setEditedDetails(storedUser);
-    }
+    const fetchUserDetails = async () => {
+      try {
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+
+        if (storedUser && storedUser._id) {
+          // Fetch user details from the API
+          const response = await fetch(
+            `http://localhost:5000/api/users/profile/${storedUser._id}`
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch user details");
+          }
+
+          const userData = await response.json();
+
+          // Set the user and editable details
+          setUser(userData.user);
+          setEditedDetails(userData.user);
+        } else {
+          throw new Error("No valid user data found in local storage");
+        }
+      } catch (err) {
+        console.error("Error fetching user details:", err);
+      }
+    };
+
+    fetchUserDetails();
   }, []);
 
   // Handle input changes during editing

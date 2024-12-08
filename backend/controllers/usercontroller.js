@@ -2,6 +2,69 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+// Save or update user profile
+export const saveUserProfile = async (req, res) => {
+  const { name, email, role, organizationName, phone, experienceLevel } =
+    req.body;
+
+  try {
+    // Find the user by their email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update the user's profile information
+    if (name) user.name = name;
+    if (role) user.role = role;
+    if (organizationName) user.organizationName = organizationName;
+    if (phone) user.phone = phone;
+    if (experienceLevel) user.experienceLevel = experienceLevel;
+
+    // Save the updated user data to the database
+    await user.save();
+
+    console.log(user);
+
+    // Send a success response
+    res
+      .status(200)
+      .json({ message: "User profile updated successfully", user });
+  } catch (error) {
+    console.error("Error saving user profile:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Retrieve user profile by ID
+export const getUserProfile = async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    // Validate the user ID
+    if (!userId || userId === "undefined") {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    // Find the user by their ID
+    const user = await User.findById(userId);
+
+    // If the user is not found, return a 404 response
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Return the user's profile
+    res.status(200).json({
+      message: "User profile retrieved successfully",
+      user,
+    });
+  } catch (error) {
+    console.error("Error retrieving user profile:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 // Generate JWT token
 const generateToken = (user) => {
   return jwt.sign({ id: user._id, us: user }, process.env.JWT_SECRET, {

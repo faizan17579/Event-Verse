@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 
 const TicketSalesPage = () => {
   const org = JSON.parse(localStorage.getItem("user"));
-  const [salesData, setSalesData] = useState([]); // Initialize as an empty array
+  const [salesData, setSalesData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage] = useState(10); // Rows displayed per page
+  const [rowsPerPage] = useState(10);
   const [filters, setFilters] = useState({
     eventName: "",
     dateRange: "",
@@ -28,13 +28,30 @@ const TicketSalesPage = () => {
       const data = await response.json();
 
       if (data && Array.isArray(data.salesData)) {
-        setSalesData(data.salesData);
+        const filteredSalesData = data.salesData.filter((sale) => {
+          const saleDate = new Date(sale.date).toLocaleDateString("en-US");
+          const filterDate = dateRange
+            ? new Date(dateRange).toLocaleDateString("en-US")
+            : null;
+
+          const matchesDate = !filterDate || saleDate === filterDate;
+          const matchesLocation =
+            !location ||
+            sale.location.toLowerCase().includes(location.toLowerCase());
+          const matchesEventName =
+            !eventName ||
+            sale.eventName.toLowerCase().includes(eventName.toLowerCase());
+
+          return matchesDate && matchesLocation && matchesEventName;
+        });
+
+        setSalesData(filteredSalesData);
       } else {
         setSalesData([]);
       }
     } catch (error) {
       console.error("Failed to fetch sales data", error);
-      setSalesData([]); // Fallback to an empty array on error
+      setSalesData([]);
     }
   };
 
@@ -42,7 +59,7 @@ const TicketSalesPage = () => {
     if (filters.organizerId) {
       fetchSalesData();
     }
-  }, []); // Fetch sales data on mount if organizerId exists
+  }, [filters.organizerId]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -52,7 +69,18 @@ const TicketSalesPage = () => {
     }));
   };
 
-  // Pagination logic
+  const resetFilters = () => {
+    const defaultFilters = {
+      eventName: "",
+      dateRange: "",
+      location: "",
+      organizerId: org?.id || "",
+    };
+    setFilters(defaultFilters);
+    setCurrentPage(1);
+    fetchSalesData();
+  };
+
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
   const currentRows = Array.isArray(salesData)
@@ -77,7 +105,6 @@ const TicketSalesPage = () => {
       </header>
 
       <div className="container mx-auto px-6 py-6">
-        {/* Filters Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           <input
             type="text"
@@ -110,15 +137,7 @@ const TicketSalesPage = () => {
               Apply Filters
             </button>
             <button
-              onClick={() => {
-                setFilters({
-                  eventName: "",
-                  dateRange: "",
-                  location: "",
-                  organizerId: org?.id || "",
-                });
-                fetchSalesData();
-              }}
+              onClick={resetFilters}
               className="bg-red-600 hover:bg-red-700 text-white py-2 px-8 rounded-full transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             >
               Reset Filters
@@ -126,7 +145,6 @@ const TicketSalesPage = () => {
           </div>
         </div>
 
-        {/* Table Section */}
         <div className="bg-white text-black p-6 rounded-lg shadow-lg overflow-x-auto">
           <h2 className="text-xl font-bold mb-4">Sales Details</h2>
           <table className="table-auto w-full border-collapse border border-gray-300">
@@ -152,7 +170,7 @@ const TicketSalesPage = () => {
                     <td className="p-3 border">{sale.remainingTickets}</td>
                     <td className="p-3 border">${sale.revenue}</td>
                     <td className="p-3 border">
-                      {new Date(sale.date).toLocaleDateString()}
+                      {new Date(sale.date).toLocaleDateString("en-US")}
                     </td>
                     <td className="p-3 border">{sale.location}</td>
                   </tr>
@@ -170,7 +188,6 @@ const TicketSalesPage = () => {
             </tbody>
           </table>
 
-          {/* Pagination */}
           <div className="flex justify-between items-center mt-4">
             <button
               disabled={currentPage === 1}

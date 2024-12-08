@@ -5,7 +5,9 @@ import {
   getPreferences,
   updatePreferences,
   deleteUser,
-  getAllUsers
+  getAllUsers,
+  saveUserProfile,
+  getUserProfile,
 } from "../controllers/usercontroller.js";
 
 const router = express.Router();
@@ -16,5 +18,7 @@ router.get("/preferences", getPreferences);
 router.put("/preferences", updatePreferences);
 router.delete("/delete/:userId", deleteUser);
 router.get("/all", getAllUsers);
+router.put("/profile", saveUserProfile);
+router.get("/profile/:id", getUserProfile);
 
 export default router;
