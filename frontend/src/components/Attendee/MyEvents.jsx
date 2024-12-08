@@ -1,3 +1,5 @@
+// Showing Events for which an attendee resgistered and allowing download of e tickets
+
 import React, { useState, useEffect } from "react";
 import {
   FaTicketAlt,
