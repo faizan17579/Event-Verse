@@ -223,6 +223,20 @@ const OrganizerDashboard = () => {
               View Analytics
             </Link>
           </div>
+
+          {/* Card 4: Manage Sponsor Applications */}
+          <div className="bg-gray-100 text-black p-6 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300">
+            <h3 className="text-2xl font-bold mb-4">Manage Sponsor Applications</h3>
+            <p>
+              View and manage sponsorship applications for your events.
+            </p>
+            <Link
+              to="/manage-sponsor-applications"
+              className="block mt-4 text-center bg-purple-600 text-white py-2 rounded-full hover:bg-purple-700 transition"
+            >
+              Manage Applications
+            </Link>
+          </div>
         </div>
       </section>
 
