@@ -1,3 +1,5 @@
+// Minor changes to Dashboard UI
+
 import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 
