@@ -1,3 +1,5 @@
+// View ing Tickets for all registered events
+
 import React, { useState, useEffect } from "react";
 import { FaTicketAlt } from "react-icons/fa";
 import { MdEvent, MdDateRange } from "react-icons/md";
