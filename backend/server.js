@@ -6,9 +6,9 @@ import eventRoutes from "./routes/eventRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import ticketRoute from "./routes/ticketroutes.js";
 import feedbackRoutes from "./routes/FeedbackRoutes.js";
+
+import sponsorRoutes from "./routes/sponsorRoutes.js";
 import ActivitiesRoutes from "./routes/useractivityroutes.js";
-
-
 
 dotenv.config();
 connectDB();
@@ -25,6 +25,7 @@ app.use("/api/events", eventRoutes);
 app.use("/api/tickets", ticketRoute);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/activities", ActivitiesRoutes);
+app.use("/api/sponsor", sponsorRoutes);
 
 // Root route
 app.get("/", (req, res) => {

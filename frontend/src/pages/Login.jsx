@@ -38,7 +38,7 @@ const Login = () => {
       } else if (user.role === "Admin") {
         navigate("/dashboard/admin");
       } else if (user.role === "Sponsor") {
-        navigate("/dashboard/sponsor");
+        navigate("/dashboard/vendor");
       }
     } catch (error) {
       setMessage(error.response?.data?.message || "An error occurred");

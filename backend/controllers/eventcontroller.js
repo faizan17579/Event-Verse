@@ -3,7 +3,7 @@ import User from "../models/User.js";
 import Stripe from "stripe";
 import PDFDocument from "pdfkit";
 import Feedback from "../models/Feedback.js";
-import Ticket from "../models/ticket.js";
+import Ticket from "../models/Ticket.js";
 
 const stripe = new Stripe(
   "sk_test_51QS0yZJDUj9ArTtKD6jx9SHeZFMGmcETkZF9Bag1pvU8yG1KtBpus7fPE75VwavXVwoeuWfl4SwHBSzI7CHQk0Rw00z4tWPCLM"
@@ -128,18 +128,19 @@ export const downloadTicket = async (req, res) => {
 
 // Route: Download E-Ticket
 export const downloadAnalytics = async (req, res) => {
-  const {orgId,orgName,organizerEmail,totalRevenue,totalfeedback,totalTicketsSold } = req.body;
+  const {
+    orgId,
+    orgName,
+    organizerEmail,
+    totalRevenue,
+    totalfeedback,
+    totalTicketsSold,
+  } = req.body;
 
   try {
     if (!organizerEmail) {
-      return res
-        .status(400)
-        .json({ message: " attendee email are required." });
+      return res.status(400).json({ message: " attendee email are required." });
     }
-
-   
-
-  
 
     const doc = new PDFDocument();
     const chunks = [];
@@ -161,7 +162,6 @@ export const downloadAnalytics = async (req, res) => {
     doc.text(`Total Feedback: ${totalfeedback}`);
     doc.text(`Total Tickets Sold: ${totalTicketsSold}`);
     doc.end();
-
   } catch (err) {
     console.error(err);
     res
@@ -467,17 +467,16 @@ export const getEventAnalytics = async (req, res) => {
       return res.status(400).json({ error: "Organizer ID is required" });
     }
 
-
     const filter = { createdBy: organizerId };
     const events = await Event.find(filter);
-    // Fetch feedback with respect to events 
-  const eventIds = events.map(event => event._id);
+    // Fetch feedback with respect to events
+    const eventIds = events.map((event) => event._id);
 
     // Step 2: Get feedback for these events
-   const feedback = await Feedback.find({ eventId: { $in: eventIds } });
+    const feedback = await Feedback.find({ eventId: { $in: eventIds } });
 
     // Step 3: Map feedback to include eventName and other details
-    const feedbackData = feedback.map(item => ({
+    const feedbackData = feedback.map((item) => ({
       comment: item.comment,
     }));
 
@@ -500,7 +499,7 @@ export const getEventAnalytics = async (req, res) => {
 
     const totalEvents = events.length;
 
-    const checkInsCompleted =feedback.length;
+    const checkInsCompleted = feedback.length;
 
     const netProfit =
       totalRevenue -
@@ -511,7 +510,6 @@ export const getEventAnalytics = async (req, res) => {
       ticketsSold: event.attendees?.length || 0,
     }));
 
- 
     // Fetch all ticket data from the database
     const tickets = await Ticket.find();
 
@@ -533,17 +531,14 @@ export const getEventAnalytics = async (req, res) => {
       }
       return acc;
     }, []);
- 
-
-
-
- 
 
     const feedbackSummary = {
-     //add comment from feedback data to word cloud
-     wordCloud: feedbackData.map(item => item.comment),
-   
-     overallRating :(feedback.reduce((sum, item) => sum + item.rating, 0) / feedback.length).toFixed(2)
+      //add comment from feedback data to word cloud
+      wordCloud: feedbackData.map((item) => item.comment),
+
+      overallRating: (
+        feedback.reduce((sum, item) => sum + item.rating, 0) / feedback.length
+      ).toFixed(2),
     };
 
     res.status(200).json({
@@ -564,11 +559,10 @@ export const getEventAnalytics = async (req, res) => {
   }
 };
 
-
 export const generateQrCode = async (req, res) => {
   try {
     const { eventId, tickets, attendeeEmail, totalAmount } = req.body;
-console.log("Request Body:", req.body); // Log the incoming data
+    console.log("Request Body:", req.body); // Log the incoming data
     // Validate required fields
     if (!eventId || !tickets || !attendeeEmail || !totalAmount) {
       return res.status(400).json({ message: "Missing required fields" });

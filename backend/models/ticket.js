@@ -1,7 +1,6 @@
 // models/Ticket.js (Node.js with Mongoose for MongoDB)
 
 import mongoose from "mongoose";
-
 const ticketSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -28,6 +27,11 @@ const ticketSchema = new mongoose.Schema({
   bookingDate: {
     type: Date,
     default: Date.now,
+  },
+  sponsor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Vendor",
+    default: null, // Optional field to track sponsor involvement
   },
 });
 

@@ -16,6 +16,15 @@ const eventSchema = new mongoose.Schema({
   organizerName: { type: String, required: true },
   isEnded: { type: Boolean, default: false }, // Event ended status
   isApproved: { type: Boolean, default: false }, // Admin approval status
+  sponsors: [
+    {
+      vendorId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Vendor",
+      },
+      amountSponsored: { type: Number, required: true },
+    },
+  ],
 });
 
 const Event = mongoose.model("Event", eventSchema);

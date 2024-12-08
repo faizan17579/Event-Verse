@@ -1,4 +1,4 @@
-import Ticket from "../models/ticket.js";
+import Ticket from "../models/Ticket.js";
 import User from "../models/User.js";
 import Event from "../models/Event.js";
 import Feedback from "../models/Feedback.js";

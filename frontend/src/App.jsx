@@ -32,6 +32,7 @@ import MyEvents from "./components/Attendee/MyEvents";
 import TicketSalesPage from "./components/Organizer/TicketSalesPage";
 import EventAnalytics from "./components/Organizer/EventAnalytics";
 import ViewReports from "./components/Admin/ViewReports";
+import DashboardVendor from "./components/Vendors/DashboardVendor";
 
 const App = () => {
   return (
@@ -45,6 +46,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard/attendee" element={<DashboardAttendee />} />
+          <Route path="/dashboard/sponsor" element={<DashboardVendor />} />
           <Route path="/browse-events" element={<BrowseEvents />} />
           <Route path="/my-tickets" element={<ViewTickets />} />
 

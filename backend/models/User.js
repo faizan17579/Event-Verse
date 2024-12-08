@@ -20,7 +20,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["Attendee", "Organizer", "Admin", "Sponsor"],
+
+      enum: ["Attendee", "Organizer", "Admin", "Sponsor", "Vendor"],
       required: true,
     },
     preferences: [
