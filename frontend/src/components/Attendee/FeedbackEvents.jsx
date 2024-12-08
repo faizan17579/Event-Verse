@@ -1,3 +1,5 @@
+// Giving Feedback for Events, changing feedbacks and applying filters
+
 import React, { useState, useEffect } from "react";
 import {
   FaMapMarkerAlt,
