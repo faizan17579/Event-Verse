@@ -7,7 +7,7 @@ import userRoutes from "./routes/userRoutes.js";
 import ticketRoute from "./routes/ticketroutes.js";
 import feedbackRoutes from "./routes/FeedbackRoutes.js";
 
-import sponsorRoutes from "./routes/sponsorRoutes.js";
+ import sponsorRoutes from "./routes/sponsorRoutes.js";
 import ActivitiesRoutes from "./routes/useractivityroutes.js";
 
 dotenv.config();

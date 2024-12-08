@@ -2,66 +2,47 @@
 
 const API_BASE_URL = "http://localhost:5000/api/sponsor";
 
-// Helper function for handling fetch responses
-const handleResponse = async (response) => {
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "An error occurred while fetching data");
-  }
-  return response.json();
-};
-
-// Fetch vendor details
-export const getVendorDetails = async (vendorId) => {
+// Function to submit a sponsorship application
+export const submitApplication = async (applicationData) => {
   try {
-    console.log("didjd", vendorId);
-    const response = await fetch(`${API_BASE_URL}/vendors/${vendorId}`);
-    return await handleResponse(response);
-  } catch (error) {
-    throw new Error("Error fetching vendor details: " + error.message);
-  }
-};
+    const response = await fetch(`${API_BASE_URL}/submit`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(applicationData),
+    });
 
-// Fetch sponsored events for the vendor
-export const getVendorSponsoredEvents = async (vendorId) => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/vendors/${vendorId}/events`);
-    return await handleResponse(response);
+    if (!response.ok) {
+      throw new Error("Failed to submit application");
+    }
+
+    const data = await response.json();
+    return data;
   } catch (error) {
-    throw new Error(
-      "Error fetching vendor's sponsored events: " + error.message
-    );
+    console.error("Error submitting application:", error);
+    throw error;
   }
 };
 
-// Approve a sponsorship for an event
-export const approveSponsorship = async (vendorId, sponsorshipId) => {
+// Function to view sponsorship applications for a specific user
+export const viewApplications = async (userId) => {
   try {
-    const response = await fetch(
-      `${API_BASE_URL}/vendors/${vendorId}/sponsorships/${sponsorshipId}/approve`,
-      {
-        method: "PUT", // Change to PUT for updating resource
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    return await handleResponse(response);
-  } catch (error) {
-    throw new Error("Error approving sponsorship: " + error.message);
-  }
-};
+    const response = await fetch(`${API_BASE_URL}/user/${userId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-// Reject a sponsorship for an event
-export const rejectSponsorship = async (vendorId, sponsorshipId) => {
-  try {
-    const response = await fetch(
-      `${API_BASE_URL}/vendors/${vendorId}/sponsorships/${sponsorshipId}/reject`,
-      {
-        method: "PUT", // Change to PUT for updating resource
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    return await handleResponse(response);
+    if (!response.ok) {
+      throw new Error("Failed to fetch applications");
+    }
+
+    const data = await response.json();
+    return data;
   } catch (error) {
-    throw new Error("Error rejecting sponsorship: " + error.message);
+    console.error("Error fetching applications:", error);
+    throw error;
   }
 };

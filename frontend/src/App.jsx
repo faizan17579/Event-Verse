@@ -12,7 +12,7 @@ import Login from "./pages/Login";
 import DashboardAttendee from "./components/Attendee/DashboardAttendee";
 import DashboardOrganizer from "./components/Organizer/DashboardOrganizer";
 import DashboardAdmin from "./components/Admin/DashboardAdmin";
-//import DashboardSponsor from "./components/DashboardSponsor";
+
 import Preferences from "./components/Attendee/Preferences";
 //import EventDashboard from "./components/EventDashboard"; // Import the new component
 import Home from "./pages/Home";
@@ -32,7 +32,11 @@ import MyEvents from "./components/Attendee/MyEvents";
 import TicketSalesPage from "./components/Organizer/TicketSalesPage";
 import EventAnalytics from "./components/Organizer/EventAnalytics";
 import ViewReports from "./components/Admin/ViewReports";
-import DashboardVendor from "./components/Vendors/DashboardVendor";
+import DashboardSponser from "./components/Sponsers/DashboardSponser";
+import Application from "./components/Sponsers/Application"
+import Confirmation from "./components/Sponsers/ConfirmPage";
+import ViewApplications from "./components/Sponsers/ViewApplications";
+import ManageSponsorApplications from "./components/Organizer/ManageSponserApplications";
 
 const App = () => {
   return (
@@ -46,7 +50,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard/attendee" element={<DashboardAttendee />} />
-          <Route path="/dashboard/sponsor" element={<DashboardVendor />} />
+          <Route path="/dashboard/vendor" element={<DashboardSponser />} />
           <Route path="/browse-events" element={<BrowseEvents />} />
           <Route path="/my-tickets" element={<ViewTickets />} />
 
@@ -63,7 +67,7 @@ const App = () => {
           <Route path="/manage-events" element={<ManageEvents />} />
           <Route path="/organizer/create-event" element={<EventCreation />} />
           <Route path="/dashboard/admin" element={<DashboardAdmin />} />
-          {/* <Route path="/dashboard/sponsor" element={<DashboardSponsor />} /> */}
+         {/* <Route path="/dashboard/sponsor" element={<DashboardSponsor />} />  */}
           <Route path="/profile" element={<Profile />} />
           <Route path="/feedback" element={<EventFeedback />} />
           <Route path="/all-feedback" element={<AllFeedback />} />
@@ -72,7 +76,13 @@ const App = () => {
           <Route path="/ticket-sales" element={<TicketSalesPage />} />
           <Route path="/event-analytics" element={<EventAnalytics />} />
           <Route path="/admin/reports" element={<ViewReports />} />
+          <Route path="/sponsor/apply" element={<Application />} />
+          <Route path="/sponsor/confirmation" element={<Confirmation />} />
+          <Route path="/sponsor/applications"
+        element={<ViewApplications/>}/>
+                <Route path="/manage-sponsor-applications" element={<ManageSponsorApplications />} />
         </Routes>
+       
       </Router>
     </div>
   );

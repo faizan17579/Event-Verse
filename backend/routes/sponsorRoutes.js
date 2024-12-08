@@ -1,30 +1,18 @@
-// Import necessary modules and models
 import express from "express";
-import {
-  getVendorDetails,
-  getSponsoredEvents,
-  approveSponsorship,
-  rejectSponsorship,
-} from "../controllers/SponsorController.js";
+import { submitApplication, viewApplication, viewApplicationsByOrganizer, changeApplicationStatus } from "../controllers/SponsorController.js";
 
 const router = express.Router();
 
-// Route to get vendor details
-router.get("/vendors/:vendorId", getVendorDetails);
+// Route to submit a sponsorship application
+router.post("/submit", submitApplication);
 
-// Route to get sponsored events
-router.get("/vendors/:vendorId/events", getSponsoredEvents);
+// Route to view sponsorship applications for a specific user
+router.get("/user/:userId", viewApplication);
 
-// Route to approve sponsorship
-router.put(
-  "/vendors/:vendorId/sponsorships/:sponsorshipId/approve",
-  approveSponsorship
-);
+// Route to view sponsorship applications for events created by a specific organizer
+router.get("/organizer/:organizerId", viewApplicationsByOrganizer);
 
-// Route to reject sponsorship
-router.put(
-  "/vendors/:vendorId/sponsorships/:sponsorshipId/reject",
-  rejectSponsorship
-);
+// Route to change the status of a sponsorship application
+router.patch("/application/:applicationId", changeApplicationStatus);
 
 export default router;

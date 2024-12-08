@@ -1,123 +1,88 @@
-import Feedback from "../models/Feedback.js";
-import User from "../models/User.js";
+import SponserAppli from "../models/SponserAppli.js";
 import Event from "../models/Event.js";
-import Ticket from "../models/Ticket.js ";
-import Vendor from "../models/Vendor.js";
-export const getVendorDetails = async (req, res) => {
-  const { vendorId } = req.params;
-  console.log("usan", vendorId);
+
+// Submit a sponsorship application
+export const submitApplication = async (req, res) => {
+  const { userId, companyName, contactNumber, eventId, amountSponsored } = req.body;
 
   try {
-    const vendor = await Vendor.findById(vendorId).populate(
-      "sponsorships.eventId",
-      "name date location type"
-    );
-
-    if (!vendor) {
-      return res.status(404).json({ message: "Vendor not found." });
-    }
-
-    res.status(200).json({ vendor });
-  } catch (error) {
-    res.status(500).json({
-      message: "Error fetching vendor details.",
-      error: error.message,
+    const newApplication = new SponserAppli({
+      userId,
+      companyName,
+      contactNumber,
+      eventId,
+      amountSponsored,
     });
+
+    const savedApplication = await newApplication.save();
+
+    res.status(201).json(savedApplication);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to submit application", error });
   }
 };
 
-// Get all events sponsored by the vendor
-export const getSponsoredEvents = async (req, res) => {
-  const { vendorId } = req.params;
+// View sponsorship applications for a specific user
+export const viewApplication = async (req, res) => {
+  const { userId } = req.params;
 
   try {
-    const vendor = await Vendor.findById(vendorId).populate(
-      "sponsorships.eventId",
-      "name date location type amount"
-    );
-
-    if (!vendor) {
-      return res.status(404).json({ message: "Vendor not found." });
-    }
-
-    const sponsoredEvents = vendor.sponsorships.map((s) => ({
-      eventId: s.eventId._id,
-      name: s.eventId.name,
-      date: s.eventId.date,
-      location: s.eventId.location,
-      type: s.eventId.type,
-      amountSponsored: s.amountSponsored,
-      status: s.status,
-    }));
-
-    res.status(200).json({ sponsoredEvents });
-  } catch (error) {
-    res.status(500).json({
-      message: "Error fetching sponsored events.",
-      error: error.message,
+    const applications = await SponserAppli.find({ userId }).populate({
+      path: "eventId",
+      model: Event,
+      select: "name date location type createdBy organizerName isEnded isApproved"
     });
+    res.status(200).json(applications);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch applications", error });
   }
 };
 
-// Approve sponsorship for an event
-export const approveSponsorship = async (req, res) => {
-  const { vendorId, sponsorshipId } = req.params;
+// View sponsorship applications for events created by a specific organizer
+export const viewApplicationsByOrganizer = async (req, res) => {
+  const { organizerId } = req.params;
 
   try {
-    const vendor = await Vendor.findById(vendorId);
+    // Find all events created by the organizer
+    const events = await Event.find({ createdBy: organizerId });
 
-    if (!vendor) {
-      return res.status(404).json({ message: "Vendor not found." });
-    }
+    // Extract event IDs
+    const eventIds = events.map(event => event._id);
 
-    const sponsorship = vendor.sponsorships.id(sponsorshipId);
-
-    if (!sponsorship) {
-      return res.status(404).json({ message: "Sponsorship not found." });
-    }
-
-    sponsorship.status = "Approved";
-    await vendor.save();
-
-    // Optionally, update the Event schema with the sponsorship details
-    await Event.findByIdAndUpdate(sponsorship.eventId, {
-      $push: {
-        sponsors: { vendorId, amountSponsored: sponsorship.amountSponsored },
-      },
+    // Find all sponsorship applications for these events
+    const applications = await SponserAppli.find({ eventId: { $in: eventIds } }).populate({
+      path: "eventId",
+      model: Event,
+      select: "name date location type createdBy organizerName isEnded isApproved"
     });
 
-    res.status(200).json({ message: "Sponsorship approved successfully." });
+    res.status(200).json(applications);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error approving sponsorship.", error: error.message });
+    res.status(500).json({ message: "Failed to fetch applications", error });
   }
 };
 
-// Reject sponsorship for an event
-export const rejectSponsorship = async (req, res) => {
-  const { vendorId, sponsorshipId } = req.params;
+// Change the status of a sponsorship application
+export const changeApplicationStatus = async (req, res) => {
+  const { applicationId } = req.params;
+  const { status } = req.body;
+
+  if (!["pending", "approved", "rejected"].includes(status)) {
+    return res.status(400).json({ message: "Invalid status value" });
+  }
 
   try {
-    const vendor = await Vendor.findById(vendorId);
+    const application = await SponserAppli.findById(applicationId);
 
-    if (!vendor) {
-      return res.status(404).json({ message: "Vendor not found." });
+    if (!application) {
+      return res.status(404).json({ message: "Application not found" });
     }
 
-    const sponsorship = vendor.sponsorships.id(sponsorshipId);
+    application.status = status;
+    const updatedApplication = await application.save();
 
-    if (!sponsorship) {
-      return res.status(404).json({ message: "Sponsorship not found." });
-    }
-
-    sponsorship.status = "Rejected";
-    await vendor.save();
-
-    res.status(200).json({ message: "Sponsorship rejected successfully." });
+    res.status(200).json(updatedApplication);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error rejecting sponsorship.", error: error.message });
+    res.status(500).json({ message: "Failed to change application status", error });
   }
 };
